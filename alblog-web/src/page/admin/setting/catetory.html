@@ -1,0 +1,164 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    分类
+    <small>分类管理</small>
+  </h1>
+  <ol class="breadcrumb">
+    <li><a href="#"><i class="fa fa-files-o"></i> 分类</a></li>
+    <li class="active">分类管理</li>
+  </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+  <!-- Small boxes (Stat box) -->
+  <div class="row">
+    <div class="col-xs-12">
+      <form action="/{{adminpath}}?action=settingnew&operation=catetory" enctype="multipart/form-data" method="post"
+            onsubmit="return submitNew(event);"
+            class="form-horizontal" id="setting" name="form">
+
+        <div class="panel panel-default">
+          <div class="panel-heading">分类管理</div>
+          <div class="panel-body catetory">
+            {{#each catetory}}
+            <div class="row">
+              <div class="col-xs-12">
+                <ul class="nav nav-pills" role="tablist">
+                  <li role="presentation"><a href="/{{../adminpath}}?action=setting&operation=catetorylist"
+                                             onclick="return put(event)">分类列表</a></li>
+                  <li role="presentation" class="active"><a>{{#if _id}}更新分类{{else}}新增分类{{/if}}</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-md-6">
+                <div class="input-group">
+                  <span class="input-group-addon">*名称：</span>
+                  <input type="text" class="form-control" name="catetory[name]" value="{{name}}"placeholder="分类的名称"/>
+                  {{#if _id}}
+                  <input type="hidden" name="catetory[id]" value="{{_id}}"/>
+                  {{/if}}
+                </div>
+              </div>
+              <div class="hidden-xs col-md-6">
+                <div class="right-tips-text">
+                 分类的名称
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-md-6">
+                <div class="input-group">
+                  <span class="input-group-addon">*类型：</span>
+                  <input type="text" class="form-control" name="catetory[type]" value="{{type}}"
+                         placeholder="分类的类型,属于那个模块"/>
+                </div>
+              </div>
+              <div class="hidden-xs col-md-6">
+                <div class="right-tips-text">
+                  分类的类型,属于那个模块
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-md-6">
+                <div class="input-group">
+                  <span class="input-group-addon">*目录：</span>
+                  <input type="text" class="form-control" name="catetory[alias]" value="{{alias}}"
+                         placeholder="分类的目录,可用于URL访问,不可重复"/>
+                </div>
+              </div>
+              <div class="hidden-xs col-md-6">
+                <div class="right-tips-text">
+                  分类的目录,可用于URL访问,不可重复
+                </div>
+              </div>
+            </div>
+            {{/each}}
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-12 xs-md-6">
+                <button type="submit" class="btn btn-success" disabled="disabled">保存</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script>
+          var catetory = '{{#each catetory}}{{_id}}{{/each}}';
+          console.log(catetory)
+          if(catetory !='' && catetory != 'undefined'){
+            $('input').change(function(){
+              if($(this).val() == ''){
+                var name = $(this).prev().text()
+                //console.log(name.substr(1,name.length-2))
+                tips(name.substr(1,name.length-2)+' 不能为空！')
+                $(this).parent().addClass('error').removeClass('correct')
+              }else{
+                $(this).parent().addClass('correct').removeClass('error')
+              }
+              if($(".catetory").find('.error').length <= 0 && $(".catetory").find('.correct').length >= 0){
+                $("button").removeAttr('disabled')
+              }else{
+                $("button").attr('disabled',true)
+              }
+            })
+            $("input[name='catetory[alias]']").change(function(){
+              var _this =$(this);
+              //console.log(_this.val())
+              if(_this.val() != '' && _this.val() != 'undefined'){
+                check('catetory','alias',_this.val(),function(err,results){
+                  if(results.success){
+                    tips('目录 '+ _this.val() +' 已经存在！')
+                    $("button").attr('disabled',true)
+                    _this.parent().addClass('error').removeClass('correct')
+                  }else{
+                    $("button").removeAttr('disabled')
+                    _this.parent().addClass('correct').removeClass('error')
+                  }
+                })
+              }
+            })
+          }else{
+
+
+          $('input').blur(function(){
+            if($(this).val() == ''){
+              var name = $(this).prev().text()
+              //console.log(name.substr(1,name.length-2))
+              tips(name.substr(1,name.length-2)+' 不能为空！')
+              $(this).parent().addClass('error').removeClass('correct')
+            }else{
+              $(this).parent().addClass('correct').removeClass('error')
+            }
+            if($(".catetory").find('.error').length <= 0 && $(".catetory").find('.correct').length >= $(".catetory input").length){
+              $("button").removeAttr('disabled')
+            }else{
+              $("button").attr('disabled',true)
+            }
+          })
+          $("input[name='catetory[alias]']").blur(function(){
+            var _this =$(this);
+            //console.log(_this.val())
+            if(_this.val() != '' && _this.val() != 'undefined'){
+              check('catetory','alias',_this.val(),function(err,results){
+                if(results.success){
+                  tips('目录 '+ _this.val() +' 已经存在！')
+                  $("button").attr('disabled',true)
+                  _this.parent().addClass('error').removeClass('correct')
+                }else{
+                  $("button").removeAttr('disabled')
+                  _this.parent().addClass('correct').removeClass('error')
+                }
+              })
+            }
+          })
+          }
+        </script>
+      </form>
+    </div>
+  </div>
+</section><!-- /.content -->

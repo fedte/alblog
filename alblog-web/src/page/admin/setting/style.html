@@ -1,0 +1,97 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    界面
+    <small>风格管理</small>
+  </h1>
+  <ol class="breadcrumb">
+    <li><a href="#"><i class="fa fa-th"></i> 界面</a></li>
+    <li class="active">风格管理</li>
+  </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+  <!-- Small boxes (Stat box) -->
+  <div class="row">
+    <div class="col-xs-12">
+      <form action="/{{adminpath}}?action=settingnew" method="post" onsubmit="return submitNew(event)"
+            id="setting" class="form-horizontal" enctype="multipart/form-data">
+
+        <div class="panel panel-default style">
+          <div class="panel-heading">风格样式列表</div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="title-header">
+                  <h4>技巧提示</h4>
+                </div>
+                <div class="panel-body">
+                  <ul>
+                    <li>如果把导出的风格文件放置在模板目录下，则可以通过风格管理直接使用该风格</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12">
+                <ul class="list row">
+                  {{#each themes}}
+                    <li class="col-xs-12 col-md-2">
+                      <h4>{{name}} &nbsp; V{{version}}</h4>
+                      <p>
+                        <img src="{{image}}" alt="{{name}}" class="img-rounded">
+                        <input type="text" value="{{name}}" class="form-control" />
+                      </p>
+                      <div class="right">
+                        <p>设为默认</p>
+                        <div class="radio">
+                          <label><input type="radio" name="settingnew[themes][path]" value="{{directory}}"/> 启用</label>
+                        </div>
+                        <p>作者：</p>
+                        <p>{{author}}</p>
+                      </div>
+                    </li>
+                  {{/each}}
+                  </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        {{#each setting}}
+        <!--<div class="panel panel-default">-->
+          <!--<div class="panel-heading">风格样式参数设置</div>-->
+          <!--<div class="panel-body">-->
+            <!--<div class="row">-->
+              <!--<div class="col-xs-12 col-md-4">-->
+                <!--<div class="title-header">-->
+                  <!--<h4>风格静态资源路径</h4>-->
+                <!--</div>-->
+                <!--<div class="panel-body">-->
+                  <!--<input type="text" class="form-control" name="settingnew[themes][staticPath]"/>-->
+                <!--</div>-->
+              <!--</div>-->
+              <!--<div class="hidden-xs col-md-8">-->
+                <!--<div class="right-tips-text">-->
+
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-12 col-md-6">
+                <button type="submit" name="Submit" class="btn btn-success">保存</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script>
+          $(".list input[type='radio'][value='{{themes.path}}']").attr('checked',true)
+        </script>
+        {{/each}}
+      </form>
+    </div>
+  </div>
+</section><!-- /.content -->

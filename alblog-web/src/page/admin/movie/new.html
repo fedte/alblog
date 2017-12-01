@@ -1,0 +1,319 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    视频
+    <small>视频发布</small>
+  </h1>
+  <ol class="breadcrumb">
+    <li><a href="#"><i class="fa fa-youtube-play"></i> 视频</a></li>
+    <li class="active">视频发布</li>
+  </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+  <!-- Small boxes (Stat box) -->
+  {{#if catetories}}
+  <div class="row">
+    <div class="col-xs-12">
+      <form action="/{{adminpath}}?action=videonew" enctype="multipart/form-data" method="post"
+            onsubmit="return submitNew(event);"
+            class="form-horizontal" id="setting" name="form">
+        {{#each movie}}
+        <div class="panel panel-default videoNew">
+          <div class="panel-heading">视频信息</div>
+          <div class="panel-body">
+            {{#if _id}}
+            <input type="hidden" name='movie[_id]' value="{{_id}}"/>
+            {{/if}}
+            <div class="row">
+              <div class="col-xs-12 col-md-6">
+                <div class="input-group">
+                  <span class="input-group-addon">标题：</span>
+                  <input type="text" class="form-control" name="movie[title]" value="{{title}}" placeholder="请输入标题"/>
+                </div>
+              </div>
+              <div class="hidden-xs col-md-6">
+                <div class="right-tips-text">
+                  视频标题、名称
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-md-6">
+                <div class="input-group">
+                  <span class="input-group-addon">简介：</span>
+                  <textarea class="form-control" name="movie[summary]" placeholder="介绍下吧">{{summary}}</textarea>
+                </div>
+              </div>
+              <div class="col-md-6 hidden-xs">
+                <div class="right-tips-text">
+                  视频信息简介
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-md-6">
+                <div class="input-group">
+                  <span class="input-group-addon">缩图：</span>
+                  <input type="text" class="form-control file" name="movie[poster]" value="{{poster}}"/>
+                  <a href="javascript:;" class="file-up">选择图片
+                    <input type="file" name="image" class="image" accept="image/*"/></a>
+                  <span class="hidden-xs show-file-name">
+                    <img src="{{poster}}" alt=""/>
+                  </span>
+                </div>
+              </div>
+              <div class="hidden-xs col-md-6">
+                <div class="right-tips-text">
+                  可以是远程图片，也可以上传本地图片(如果上传本地图片，远程图片将无效)
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-md-6">
+                <div class="input-group">
+                  <span class="input-group-addon"> 文件：</span>
+                  <input type="text" class="form-control file" name="movie[flash]" value="{{flash}}"/>
+                  <a href="javascript:;" class="file-up">选择视频
+                    <input type="file" class="video" name="uploadvideo" accept="video/*"/></a>
+                  <span class="hidden-xs show-file-name"></span>
+                </div>
+              </div>
+              <div class="hidden-xs col-md-6">
+                <div class="right-tips-text">
+                  视频为其他网站视频，也可以上传本站的视频(后期开放)请选择视频来源！(如果视频为本地上传的，来源请选择本地！)
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-md-6">
+                <div class="input-group">
+                  <span class="input-group-addon"> 来源：</span>
+                  <div class="radio from">
+                    <label><input type="radio" name="movie[from]" value="yk"/> 优酷</label>
+                    <label><input type="radio" name="movie[from]" value="qq"/> 腾讯</label>
+                    <label><input type="radio" name="movie[from]" value="lc"/> 本地</label>
+                  </div>
+                </div>
+              </div>
+              <div class="hidden-xs col-md-6">
+                <div class="right-tips-text">
+                  视频的来源信息，很重要哦！
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-xs-12 col-md-6">
+                <div class="input-group">
+                  <span class="input-group-addon">分类：</span>
+
+                  <div class="form-control catetory">
+                    <span class="catetory-name">请选择分类</span>
+                    <i class="fa fa-sort-down"></i>
+
+                    <div class="catetory-list">
+                      {{#each ../catetories}}
+                      <span data-name="catetory" data-value="{{_id}}">{{name}}</span>
+                      {{/each}}
+                      <input type="hidden" name="movie[catetory]" value="{{catetory}}"/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="hidden-xs col-md-6">
+                <div class="right-tips-text">
+                  视频分类信息
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-md-6">
+                <div class="input-group">
+                  <span class="input-group-addon">  标签：</span>
+                  <input type="text" class="form-control" name="movie[tag]" value="{{tag}}"
+                         placeholder="每个标签之间请使用英文 , 半角符号隔开"/>
+                </div>
+              </div>
+              <div class="hidden-xs col-md-6">
+                <div class="right-tips-text">每个标签之间请使用英文 , 半角符号隔开</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-12 col-md-6">
+                {{#if _id}}
+                <button type="submit" name="Submit" class="btn btn-success">保存</button>
+                {{else}}
+                <button type="submit" name="Submit" disabled="disabled" class="btn btn-success">保存</button>
+                {{/if}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <script>
+          var from ='{{from}}';
+          var catetory = '{{catetory}}';
+          var update = '{{_id}}'
+          if(from){
+            $(".from input[name='movie[from]'][value='"+from+"']").attr('checked',true)
+          }
+          //文件上传
+          $(".file-up input").change(function () {
+            var file = $(this)[0].files[0];
+            var _this = $(this);
+            var className = _this.attr('class');
+            var err = 0;
+            var imgs = [];
+            if (file) {
+              var fileType = file.name.substring(file.name.lastIndexOf(".") + 1, file.name.length).toLowerCase();
+              if (className == 'image') {
+                imgs = [['jpg', 'png', 'jpeg', 'gif', 'bmp'], [6677, 7173, 13780, 255216]];
+                if(imgs[0].indexOf(fileType)==-1 || file.type.indexOf('image/')==-1){
+                  console.log("类型错误");
+                  err++ ;
+                  return say();
+                }
+                var reader = new FileReader();
+                reader.readAsBinaryString(file);
+                reader.onload = function(e) {
+                  var t = e.target.result,
+                      n = parseInt(t.charCodeAt(0) + "" + t.charCodeAt(1));
+                  if(imgs[1].indexOf(n) ==-1){
+                    _this.val('');
+                    err++;
+                    console.log("上传文件类型错误！")
+                  }
+                  say()
+                };
+              } else {
+                imgs = [['mp4','flv','avi']];
+                if (imgs[0].indexOf(fileType) == -1 || file.type.indexOf('video/') == -1) {
+                  err++;
+                }
+                say()
+              }
+            }
+            function say() {
+              if (err > 0) {
+                _this.parent().siblings(".show-file-name").text('').css('padding', 0);
+                $("body").append('<div class="alert tips alert-danger" role="alert">只允许上传 ' + imgs[0] + ' 等类型的文件</div>');
+                var alert = $(".alert");
+                alert.css('margin-left', alert.width() / -2);
+                alert.fadeOut(4000, function () {
+                  $(this).remove()
+                })
+              } else {
+                //console.log(_this.val())
+                var files = new FormData()
+                files.append(_this.attr('name'), _this[0].files[0]);
+                //如果是上传图片
+                if (_this.attr('class') == 'image') {
+                  _this.parent().siblings(".show-file-name").text(file.name).css('padding', '6px 10px');
+                  $.ajax({
+                    url: '/api/upload/image',
+                    type: 'post',
+                    data: files,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                      console.log(data)
+                      if(data.key){
+                        _this.parent().siblings(".file").val(data.key)
+                        _this.parent().siblings(".show-file-name").append('<img src="' + data.key + '" />')
+                      } else {
+                        err++;
+                        say();
+                      }
+                    }
+                  })
+                } else if(_this.attr('class') == 'video'){
+                  $.ajax({
+                    url: '/api/upload/video',
+                    type: 'post',
+                    data: files,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                      console.log(data)
+                      if (data.err) {
+                        err++;
+                        say();
+                      }else{
+                        _this.parent().siblings(".file").val(data.key)
+                      }
+                    }
+                  })
+                }
+              }
+              err = 0;
+            }
+          })
+          //分类选择
+          var catetoryName = $(".catetory-name");
+          var catetoryList = $(".catetory-list");
+          catetoryName.click(function () {
+            catetoryList.toggle();
+            catetoryList.find('span').removeClass('selected');
+            catetoryList.find('span[data-value="' + catetoryList.find('input').val() + '"]').addClass('selected');
+          });
+          if(catetory){
+            catetoryList.find('span[data-value="' + catetory + '"]').addClass('selected');
+            //catetoryList.hide().find('input').val(_this.data('value'));
+            catetoryName.text('{{catetoryName}}');
+          }
+          $(".catetory-list span").click(function () {
+            var _this = $(this);
+            catetoryName.text(_this.text());
+            catetoryList.hide().find('input').val(_this.data('value'));
+          });
+          $("input").blur(function(){
+            var _this = $(this);
+            var value = _this.val();
+            var title = _this.parent().find('span.input-group-addon').text()
+            var name = _this.attr('name');
+            var from = $('input[name="movie[from]"]')
+            if(name == "movie[title]" || name =='movie[flash]'){
+              check(name)
+            }
+            function check(_name){
+              if(name == _name && value == ''){
+                tips(title.substr(0,title.length-1)+' 不能为空！')
+                _this.parent().addClass('error').removeClass('correct')
+              }else{
+                _this.parent().addClass('correct').removeClass('error')
+              }
+            }
+            if( $('input[name="movie[from]"]:checked').length != 1){
+              from.parents('.input-group').addClass('error').removeClass('correct')
+            }else{
+              from.parents('.input-group').addClass('correct').removeClass('error')
+            }
+            if($("input[name='movie[catetory]']").val()==''){
+              catetoryList.find('input').val($(".catetory-list span:first").data('value'));
+            }
+            if($('.panel-body .correct').length < 3 && update == ''){
+              $("button").attr('disabled',true)
+            }else{
+              $("button").removeAttr('disabled')
+            }
+          })
+        </script>
+        {{/each}}
+      </form>
+    </div>
+  </div>
+  {{else}}
+  <div class="row">
+    <div class="col-xs-12">
+      <br/>
+      <br/>
+      <br/>
+      <h3 class="text-center text-muted">尚未添加分类，请前往 “全局 - 分类管理” 中添加视频分类</h3>
+    </div>
+  </div>
+  {{/if}}
+</section><!-- /.content -->

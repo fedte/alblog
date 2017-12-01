@@ -1,0 +1,200 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    界面
+    <small>导航设置</small>
+  </h1>
+  <ol class="breadcrumb">
+    <li><a href="#"><i class="fa fa-th"></i> 界面</a></li>
+    <li class="active">导航设置</li>
+  </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+  <!-- Small boxes (Stat box) -->
+  <div class="xs-320">
+    <p>请使用分辨率在380以上的浏览器访问本页面！</p>
+  </div>
+  <div class="row nav">
+    <div class="col-xs-12">
+      <form action="/{{adminpath}}?action=settingnew&operation=nav" onsubmit="return submitNew(event);"
+            class="form-horizontal" method="post" id="setting" enctype="multipart/form-data">
+        {{#each navlist}}
+        <div class="panel panel-default">
+          <div class="panel-heading">导航设置</div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-12">
+                <ul class="nav nav-tabs" role="tablist">
+                  <li role="presentation" class="active">
+                    <a href="#nav" aria-controls="home" role="tab" data-toggle="tab">主导航</a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#topnav" aria-controls="topnav" role="tab" data-toggle="tab">顶部导航</a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#bottomnav" aria-controls="bottomnav" role="tab" data-toggle="tab">底部导航</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- Tab panes -->
+            <div class="tab-content">
+              <div class="row ">
+                <div class="col-xs-12">
+                  <ul>
+                    <li>
+                      <span></span>
+                      <span>顺序</span>
+                      <span>名称</span>
+                      <span>链接</span>
+                      <span class="hidden-xs">首页</span>
+                      <span class="hidden-xs">可用</span></li>
+                  </ul>
+                </div>
+              </div>
+              <div role="tabpanel" class="tab-pane active" id="nav">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <ul class="list">
+                      {{#each nav.head}}
+                      <li>
+                        <span><input type="checkbox" name="settingnew[nav][delete][head]"
+                                     value="{{@index}}"/></span>
+                        <span><input class="form-control" type="text"
+                                     name="settingnew[nav][head][{{@index}}][displayorder]" value="{{displayorder}}"/></span>
+                        <span><input class="form-control" type="text" name="settingnew[nav][head][{{@index}}][name]"
+                                     value="{{name}}"/></span>
+                        <span><input class="form-control" type="text" name="settingnew[nav][head][{{@index}}][url]" value="{{url}}"/></span>
+                        <span
+                            class="hidden-xs"><input type="radio" name="settingnew[nav][defaultindex]"
+                                                     value="{{@index}}" data-index="{{defaultindex}}"/></span>
+                        <span class="hidden-xs"><input type="checkbox"
+                                                       name="settingnew[nav][head][{{@index}}][available]"
+                                                       value="1" data-available="{{available}}"/></span>
+                      </li>
+                      {{/each}}
+                      <li class="new">
+                        <div class="checkbox">
+                          <label><input type="checkbox" class="chekAll"/> 删 </label>
+                          <a href="" id="newnav" data-position="head">增加一行</a>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div role="tabpanel" class="tab-pane" id="topnav">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <ul class="list">
+                      {{#each nav.top}}
+                      <li>
+                        <span><input type="checkbox" name="settingnew[nav][delete][top]" value="{{@index}}"/></span>
+                        <span><input class="form-control" type="text" name="settingnew[nav][top][{{@index}}][displayorder]" value="{{displayorder}}"/></span>
+                        <span><input class="form-control" type="text" name="settingnew[nav][top][{{@index}}][name]" value="{{name}}"/></span>
+                        <span><input class="form-control" type="text" name="settingnew[nav][top][{{@index}}][url]" value="{{url}}"/></span>
+                        <span><input type="radio" disabled/></span>
+                        <span class="hidden-xs"><input type="checkbox" name="settingnew[nav][head][{{@index}}][available]" value="1" data-available="{{available}}"/></span>
+                      </li>
+                      {{/each}}
+                      <li class="new">
+                        <div class="checkbox">
+                          <label><input type="checkbox" class="chekAll"/> 删 </label>
+                          <a href="" id="newtopnav" data-position="top">增加一行</a>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div role="tabpanel" class="tab-pane" id="bottomnav">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <ul class="list">
+                      {{#each nav.bottom}}
+                      <li>
+                        <span><input type="checkbox" name="settingnew[nav][delete][bottom]" value="{{@index}}"/></span>
+                        <span><input class="form-control" type="text"
+                                     name="settingnew[nav][bottom][{{@index}}][displayorder]" value="{{displayorder}}"/></span>
+                        <span><input class="form-control" type="text" name="settingnew[nav][bottom][{{@index}}][name]"
+                                     value="{{name}}"/></span>
+                        <span><input class="form-control" type="text" name="settingnew[nav][bottom][{{@index}}][url]" value="{{url}}"/></span>
+                        <span><input type="radio" disabled/></span>
+                        <span class="hidden-xs"><input type="checkbox" name="settingnew[nav][head][{{@index}}][available]"
+                                                     value="1" data-available="{{available}}"/></span>
+                      </li>
+                      {{/each}}
+                      <li class="new">
+                        <div class="checkbox">
+                          <label><input type="checkbox" class="chekAll"/> 删 </label>
+                          <a href="" id="newbottomnav" data-position="bottom">增加一行</a>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-12 col-md-6">
+                <button type="submit" name="Submit" class="btn btn-success submit">保存</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script>
+          var i = 0
+          $(function(){
+            var inputs = $("input[type=radio],input[type=checkbox]")
+            //console.log(inputs.data("index"))
+            $.each(inputs,function(i){
+             var index = $(inputs[i]).data("index"),
+                 available = $(inputs[i]).data("available")
+              if(index===1){
+                $(inputs[i]).attr("checked","checked")
+              }
+              if(available){
+                $(inputs[i]).attr("checked","checked")
+              }
+            })
+            if($(".list li").length <= 3){
+              $(".submit").prop("disabled",true)
+            }else{
+              $(".submit").removeAttr("disabled")
+            }
+          })
+          $(".chekAll").click(function(){
+            if(this.checked){
+              $(this).parents('.list').find("li").find('span:first>input').prop("checked",true)
+            }else{
+              $(this).parents('.list').find("li").find('span:first>input').removeAttr("checked")
+            }
+          })
+          $("#newnav,#newbottomnav,#newtopnav").click(function(){
+
+            var lis= $(this).parents(".list").find('li'),
+                position = $(this).data('position')
+            $(this).parent().before("<li> " +
+            "<span><input type='hidden' name='settingnew[new]["+position+"][lengths]' value='"+(++i)+"'/></span> " +
+            "<span><input class='form-control' type='text'name='settingnew[new]["+position+"][newdisplayorder]'/></span> " +
+            "<span><input class='form-control' type='text' name='settingnew[new]["+position+"][newname]'/></span> " +
+            "<span><input class='form-control' type='text' name='settingnew[new]["+position+"][newurl]'/></span> " +
+            "</li>")
+            if($(".list li").length <= 3){
+              $(".submit").prop("disabled",true)
+            }else{
+              $(".submit").removeAttr("disabled")
+            }
+            return false
+          })
+        </script>
+        {{/each}}
+      </form>
+    </div>
+  </div>
+</section><!-- /.content -->
