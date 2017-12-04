@@ -23,8 +23,20 @@ let config = {
     reg: true, // 是否允许注册新用户
     salt: 'djklfjoptie'
   },
+  // 管理员设置
   admins: {
     falost: true
-  }
+  },
+  session_secret: 'alblog', // 务必修改
+  auth_cookie_name: 'alblog',
+  // cookid配置
+  cookie:{
+    domain:'',
+    path: '/',
+    maxAge: 1000 * 60 * 60 * 24 * 30,
+    // signed: true,
+    // secure:true,
+    // httpOnly: false
+  },
 }
 module.exports = config

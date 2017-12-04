@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
-const config   = require('../../config');
-const logger   = require('../../lib/logger.lib')
+const mongoose = require('mongoose')
+const ROOT     = process.cwd()
+const config   = require(ROOT + '/config')
+const logger   = require(ROOT + '/lib/logger.lib')
 
 // const mongoConfig = 'mongodb://' + config.db.user + ':' + config.db.pass + '@' + config.db.host + ':' + config.db.port + '/' + config.db.db,
 const mongoConfig = 'mongodb://' + config.db.host + ':' + config.db.port + '/' + config.db.db
@@ -10,12 +11,16 @@ mongoose.connect(mongoConfig, {
   // pass: config.db.pass
 }, function (err) {
   if (err) {
-    logger.database('connect to %s error: ', config.db, err.message);
-    process.exit(1);
+    logger.database('connect to %s error: ', config.db, err.message)
+    process.exit(1)
   }
 });
 
 // models
-require('./user.model');
+require('./user.model')
+require('./article.model')
+require('./catetory.model')
 
-exports.User         = mongoose.model('User');
+exports.User         = mongoose.model('User')
+exports.Article      = mongoose.model('Article')
+exports.Catetory      = mongoose.model('Catetory')

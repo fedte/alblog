@@ -2,9 +2,11 @@ const validator      = require('validator')
 const eventproxy     = require('eventproxy')
 const uuid           = require('node-uuid')
 const utility        = require('utility')
+const ROOT        = process.cwd()
 
-const config         = require('../../config')
-const loggers        = require('../../lib/logger.lib')
+const config         = require(ROOT + '/config')
+const loggers        = require(ROOT + '/lib/logger.lib')
+
 const User           = require('../proxy').User
 // const mail           = require('../utils/mail')
 const tools          = require('../utils/tools')
@@ -149,7 +151,6 @@ exports.login = function (req, res, next) {
         user: {
           uuid,
           "id": user._id,
-          "accessToken": user.accessToken,
           "avatar": user.avatar,
           "email": user.email,
           "name": user.name,
@@ -158,8 +159,16 @@ exports.login = function (req, res, next) {
           "last_login_at": user.last_login_at
         }
       }
-      cache.set(user._id, uuid, tools.time.m() * 30 / 1000)
+      req.session.user = entity.user
+      gen_session(user, res)
+      cache.set('user_' + user._id, uuid, tools.time.m() * 30 / 1000)
       return resJSON(res, true, 10000, '登录成功', entity)
     }));
   });
 };
+
+function gen_session(user, res) {
+  var auth_token = user._id + '$$$$'; // 以后可能会存储更多信息，用 $$$$ 来分隔
+
+  res.cookie(config.auth_cookie_name, auth_token, config.cookie); //cookie 有效期30天
+}
