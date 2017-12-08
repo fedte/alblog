@@ -9,11 +9,11 @@ const _         = require('lodash');
 const CatetorySchema = new Schema({
   name: { type: String },
   type: { type: String },
+  alias:{ type: String },
   content_count: [{ type: ObjectId, ref: 'Article' }],
   create_at: { type: Date, default: Date.now },
   update_at: { type: Date, default: Date.now },
-  deleted: { type: Boolean, default: false },
-  alias:{ type: String },
+  deleted: { type: Boolean, default: false }
 });
 
 CatetorySchema.plugin(BaseModel);

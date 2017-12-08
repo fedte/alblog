@@ -5,14 +5,14 @@ import * as types from '../mutation-types'
 
 const state = {
   isLogin: false,
-  message: {}
+  isAdmin: false
 }
 
 // getters
 // 获取当前状态的
 const getters = {
   isLogin: state => state.isLogin,
-  message: state => state.message
+  isAdmin: state => state.isAdmin
 }
 
 // actions
@@ -23,8 +23,8 @@ const actions = {
     commit(types.CHANGE_ISLOGIN, { isLogin: key })
   },
 
-  setMessage ({ commit, state }, message) {
-    commit(types.CHANGE_MESSAGE, { message: message })
+  setAdmin ({ commit, state }, user) {
+    commit(types.CHANGE_ADMIN, { user: user })
   }
 }
 
@@ -36,8 +36,8 @@ const mutations = {
     state.isLogin = isLogin
   },
 
-  [types.CHANGE_MESSAGE] (state, { message }) {
-    state.message = {...state.message, ...message}
+  [types.CHANGE_ADMIN] (state, { user }) {
+    state.isAdmin = user
   }
 }
 

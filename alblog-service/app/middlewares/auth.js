@@ -56,7 +56,7 @@ exports.adminRequired = function (req, res, next) {
       ep.emit("login_err", 10140, "登录超时")
     }
   })
-};
+}
 
 /**
  * @name userRequired
@@ -101,7 +101,7 @@ exports.userRequired = function (req, res, next) {
       ep.emit("login_err", 10140, "登录超时")
     }
   })
-};
+}
 
 /**
  * @name authUser
@@ -147,4 +147,4 @@ exports.authUser = function (req, res, next) {
       ep.emit("login_err", 10140, "登录超时")
     }
   })
-};
+}

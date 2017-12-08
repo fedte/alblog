@@ -2,7 +2,7 @@
   <section>
     <header class="main-header">
       <!-- Logo -->
-      <router-link to="" class="logo">
+      <router-link :to="adminpath" class="logo">
         <!-- 对于侧边栏迷你50x50像素迷你标志 -->
         <span class="logo-mini"><b>F</b>ED</span>
         <!-- 正常状态和移动设备标识 -->
@@ -14,14 +14,14 @@
         <a href="javascript:;" class="sidebar-toggle" data-toggle="offcanvas" role="button">
           <span class="sr-only">切换导航</span>
         </a>
-
         <div class="navbar-custom-menu">
           <ul class="nav navbar-nav">
             <!-- Messages: style can be found in dropdown.less-->
             <li>
               <router-link to="/" target="_blank" title="网站首页"><i class="fa fa-home"></i></router-link>
             </li>
-            <li class="dropdown messages-menu">
+
+            <li v-if="false" class="dropdown messages-menu">
               <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
                 <i class="fa fa-envelope-o"></i>
                 <span class="label label-success">4</span>
@@ -101,7 +101,7 @@
               </ul>
             </li>
             <!-- Notifications: style can be found in dropdown.less -->
-            <li class="dropdown notifications-menu">
+            <li v-if="false" class="dropdown notifications-menu">
               <router-link to="#" class="dropdown-toggle" data-toggle="dropdown">
                 <i class="fa fa-bell-o"></i>
                 <span class="label label-warning">10</span>
@@ -145,7 +145,7 @@
               </ul>
             </li>
             <!-- Tasks: style can be found in dropdown.less -->
-            <li class="dropdown tasks-menu">
+            <li v-if="false" class="dropdown tasks-menu">
               <router-link to="#" class="dropdown-toggle" data-toggle="dropdown">
                 <i class="fa fa-flag-o"></i>
                 <span class="label label-danger">9</span>
@@ -256,8 +256,8 @@
                   <div class="pull-left">
                     <router-link to="#" class="btn btn-default btn-flat">简介</router-link>
                   </div>
-                  <div class="pull-right">
-                    <router-link to="/logout" class="btn btn-default btn-flat">退出</router-link>
+                  <div class="pull-right" @click="loginOut">
+                    <router-link to="" class="btn btn-default btn-flat">退出</router-link>
                   </div>
                 </li>
               </ul>
@@ -277,21 +277,20 @@
           </div>
           <div class="pull-left info">
             <p>admin</p>
-
             <router-link to="#"><i class="fa fa-circle text-success"></i> 在线</router-link>
           </div>
-          <div class="pull-right">
-            <router-link to="/logout"><i class="fa fa-sign-out"></i> </router-link>
+          <div class="logout" @click="loginOut">
+            <router-link to=""><i class="fa fa-sign-out"></i></router-link>
           </div>
         </div>
         <!-- search form -->
-        <form action="#" method="get" class="sidebar-form">
+        <form method="get" class="sidebar-form">
           <div class="input-group">
             <input type="text" name="q" class="form-control" placeholder="Search..." />
             <span class="input-group-btn">
-                        <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i>
-                        </button>
-                      </span>
+              <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i>
+              </button>
+            </span>
           </div>
         </form>
         <!-- /.search form -->
@@ -299,55 +298,54 @@
         <ul class="sidebar-menu">
           <li class="header">主导航</li>
           <li class="active treeview">
-            <router-link :to="adminpath">
+            <router-link exact active-class="active" :to="adminpath + '/index'" exact>
               <i class="fa fa-dashboard"></i> <span>控制面板</span> <span class="label label-primary pull-right"></span></i>
             </router-link>
           </li>
-          <li class="treeview" id="">
+          <!-- 全局设置 -->
+          <li class="treeview">
             <a href="javascript:;">
               <i class="fa fa-files-o"></i> <span>全局</span> <i class="fa fa-angle-left pull-right"></i>
             </a>
             <ul class="treeview-menu">
-              <li>
-                <router-link :to="adminpath + '?action=setting&operation=basic'"><i class="fa fa-circle-o"></i>基本设置</router-link>
+              <li v-if="false">
+                <router-link exact active-class="active" :to="adminpath + '/setting/access'"><i class="fa fa-circle-o"></i>基本设置</router-link>
+              </li>
+              <li v-if="false">
+                <router-link exact active-class="active" :to="adminpath + '/setting/member'"><i class="fa fa-circle-o"></i>注册与访问</router-link>
+              </li>
+              <li v-if="false">
+                <router-link exact active-class="active" :to="adminpath + '/setting/seo'"><i class="fa fa-circle-o"></i>SEO设置</router-link>
               </li>
               <li>
-                <router-link to="/{adminpath}?action=setting&operation=access"><i class="fa fa-circle-o"></i>注册与访问</router-link>
-              </li>
-              <!--<li><router-link to="/{adminpath}?action=setting&operation=functions"><i class="fa fa-circle-o"></i>站点功能</router-link></li>-->
-              <li>
-                <router-link to="/{adminpath}?action=setting&operation=seo"><i class="fa fa-circle-o"></i>SEO设置</router-link>
-              </li>
-              <li>
-                <router-link to="/{adminpath}?action=setting&operation=catetorylist"><i class="fa fa-circle-o"></i>分类管理</router-link>
+                <router-link exact active-class="active" :to="adminpath + '/catetory/list'"><i class="fa fa-circle-o"></i>分类管理</router-link>
               </li>
             </ul>
           </li>
-          <li class="treeview">
+          <!-- 界面管理 -->
+          <li class="treeview" v-if="false">
             <a href="javascript:;">
               <i class="fa fa-th"></i>
               <span>界面</span>
-              <span class="label label-primary pull-right">4</span>
+              <span class="label label-primary pull-right"></span>
             </a>
             <ul class="treeview-menu">
               <li>
-                <router-link to="/{adminpath}?action=setting&operation=nav"><i class="fa fa-circle-o"></i>导航设置</router-link>
+                <router-link exact active-class="active" :to="adminpath + '/setting/nav'"><i class="fa fa-circle-o"></i>导航设置</router-link>
               </li>
+              <li v-if="false"><router-link exact active-class="active" :to="adminpath + '/setting/templates'"><i class="fa fa-circle-o"></i>模板管理</router-link></li>
               <li>
-                <router-link to="/{adminpath}?action=setting&operation=style"><i class="fa fa-circle-o"></i>风格管理</router-link>
-              </li>
-              <!--<li><router-link to="/{adminpath}?action=setting&operation=templates"><i class="fa fa-circle-o"></i>模板管理</router-link></li>-->
-              <li>
-                <router-link to="/{adminpath}?action=setting&operation=editor"><i class="fa fa-circle-o"></i>编辑器设置</router-link>
+                <router-link exact active-class="active" :to="adminpath + '/setting/edit'"><i class="fa fa-circle-o"></i>编辑器设置</router-link>
               </li>
             </ul>
           </li>
-          <!--<li>-->
-          <!--<router-link to="pages/widgets.html">-->
-          <!--<i class="fa fa-th"></i> <span>窗口小部件</span>-->
-          <!--<small class="label pull-right bg-green">新的</small>-->
-          <!--</router-link>-->
-          <!--</li>-->
+          <li v-if="false">
+            <router-link to="pages/widgets.html">
+              <i class="fa fa-th"></i> <span>窗口小部件</span>
+              <small class="label pull-right bg-green">新的</small>
+            </router-link>
+          </li>
+          <!-- 文章内容管理 -->
           <li class="treeview">
             <a href="javascript:;">
               <i class="fa fa-edit"></i>
@@ -356,27 +354,29 @@
             </a>
             <ul class="treeview-menu">
               <li>
-                <router-link :to="adminpath + '/article/new'"><i class="fa fa-circle-o"></i>文章发布</router-link>
+                <router-link exact active-class="active" :to="adminpath + '/article/new'"><i class="fa fa-circle-o"></i>文章发布</router-link>
               </li>
               <li>
-                <router-link :to="adminpath + '/article/list'"><i class="fa fa-circle-o"></i>文章管理</router-link>
+                <router-link exact active-class="active" :to="adminpath + '/article/list'"><i class="fa fa-circle-o"></i>文章管理</router-link>
               </li>
             </ul>
           </li>
-          <li class="treeview">
+          <!-- 视频内容管理 -->
+          <li class="treeview" v-if="false">
             <a href="javascript:;">
               <i class="fa fa-youtube-play"></i> <span>视频</span>
               <i class="fa fa-angle-left pull-right"></i>
             </a>
             <ul class="treeview-menu">
               <li>
-                <router-link to="/{adminpath}?action=video&operation=new"><i class="fa fa-circle-o"></i>视频发布</router-link>
+                <router-link exact active-class="active" :to="adminpath + '/video/new'"><i class="fa fa-circle-o"></i>视频发布</router-link>
               </li>
               <li>
-                <router-link to="/{adminpath}?action=video&operation=list"><i class="fa fa-circle-o"></i>视频管理</router-link>
+                <router-link exact active-class="active" :to="adminpath + '/video/list'"><i class="fa fa-circle-o"></i>视频管理</router-link>
               </li>
             </ul>
           </li>
+          <!-- 用户管理 -->
           <li class="treeview">
             <a href="javascript:;">
               <i class="fa fa-user"></i>
@@ -385,13 +385,14 @@
             </a>
             <ul class="treeview-menu">
               <li>
-                <router-link to="/{adminpath}?action=member&operation=admin"><i class="fa fa-circle-o"></i>用户管理</router-link>
+                <router-link exact active-class="active" :to="adminpath + '/member/admin'"><i class="fa fa-circle-o"></i>用户管理</router-link>
               </li>
               <li>
-                <router-link to="/{adminpath}?action=member&operation=statis"><i class="fa fa-circle-o"></i>用户统计</router-link>
+                <router-link exact active-class="active" :to="adminpath + '/member/statis'"><i class="fa fa-circle-o"></i>用户统计</router-link>
               </li>
             </ul>
           </li>
+          <!-- 商务管理 -->
           <li class="treeview">
             <a href="javascript:;">
               <i class="fa fa-laptop"></i>
@@ -400,75 +401,12 @@
             </a>
             <ul class="treeview-menu">
               <li>
-                <router-link to="/{adminpath}?action=setting&operation=link"><i class="fa fa-circle-o"></i>友情链接</router-link>
+                <router-link exact active-class="active" :to="adminpath + '/setting/link'"><i class="fa fa-circle-o"></i>友情链接</router-link>
               </li>
-              <li>
-                <router-link to="/{adminpath}?action=setting&operation=ad"><i class="fa fa-circle-o"></i>广告管理</router-link>
+              <li v-if="false">
+                <router-link exact active-class="active" :to="adminpath + '/setting/ad'"><i class="fa fa-circle-o"></i>广告管理</router-link>
               </li>
             </ul>
-          </li>
-          <!--<li class="treeview">-->
-          <!--<a href="javascript:;">-->
-          <!--<i class="fa fa-table"></i> <span>表</span>-->
-          <!--<i class="fa fa-angle-left pull-right"></i>-->
-          <!--</a>-->
-          <!--<ul class="treeview-menu">-->
-          <!--<li><router-link to="pages/tables/simple.html"><i class="fa fa-circle-o"></i> 简单的表格</router-link></li>-->
-          <!--<li><router-link to="pages/tables/data.html"><i class="fa fa-circle-o"></i>数据表</router-link></li>-->
-          <!--</ul>-->
-          <!--</li>-->
-          <!--<li>-->
-          <!--<router-link to="pages/calendar.html">-->
-          <!--<i class="fa fa-calendar"></i> <span>日历</span>-->
-          <!--<small class="label pull-right bg-red">3</small>-->
-          <!--</router-link>-->
-          <!--</li>-->
-          <!--<li>-->
-          <!--<router-link to="pages/mailbox/mailbox.html">-->
-          <!--<i class="fa fa-envelope"></i> <span>邮箱</span>-->
-          <!--<small class="label pull-right bg-yellow">12</small>-->
-          <!--</router-link>-->
-          <!--</li>-->
-          <!--<li class="treeview">-->
-          <!--<a href="javascript:;">-->
-          <!--<i class="fa fa-folder"></i> <span>实例</span>-->
-          <!--<i class="fa fa-angle-left pull-right"></i>-->
-          <!--</a>-->
-          <!--<ul class="treeview-menu">-->
-          <!--<li><router-link to="pages/examples/invoice.html"><i class="fa fa-circle-o"></i> 发票联</router-link></li>-->
-          <!--<li><router-link to="pages/examples/login.html"><i class="fa fa-circle-o"></i> 登录</router-link></li>-->
-          <!--<li><router-link to="pages/examples/register.html"><i class="fa fa-circle-o"></i> 注册Register</router-link></li>-->
-          <!--<li><router-link to="pages/examples/lockscreen.html"><i class="fa fa-circle-o"></i> 锁屏</router-link></li>-->
-          <!--<li><router-link to="pages/examples/404.html"><i class="fa fa-circle-o"></i> 404 Error</router-link></li>-->
-          <!--<li><router-link to="pages/examples/500.html"><i class="fa fa-circle-o"></i> 500 Error</router-link></li>-->
-          <!--<li><router-link to="pages/examples/blank.html"><i class="fa fa-circle-o"></i> 空白页</router-link></li>-->
-          <!--</ul>-->
-          <!--</li>-->
-          <!--<li class="treeview">-->
-          <!--<a href="javascript:;">-->
-          <!--<i class="fa fa-share"></i> <span>多级</span>-->
-          <!--<i class="fa fa-angle-left pull-right"></i>-->
-          <!--</a>-->
-          <!--<ul class="treeview-menu">-->
-          <!--<li><a href="javascript:;"><i class="fa fa-circle-o"></i> 一级</a></li>-->
-          <!--<li>-->
-          <!--<a href="javascript:;"><i class="fa fa-circle-o"></i> 一级<i class="fa fa-angle-left pull-right"></i></a>-->
-          <!--<ul class="treeview-menu">-->
-          <!--<li><router-link to="#"><i class="fa fa-circle-o"></i> 二级</a></li>-->
-          <!--<li>-->
-          <!--<router-link to="#"><i class="fa fa-circle-o"></i> 二级<i class="fa fa-angle-left pull-right"></i></router-link>-->
-          <!--<ul class="treeview-menu">-->
-          <!--<li><router-link to="#"><i class="fa fa-circle-o"></i> 三级</router-link></li>-->
-          <!--<li><router-link to="#"><i class="fa fa-circle-o"></i> 三级</router-link></li>-->
-          <!--</ul>-->
-          <!--</li>-->
-          <!--</ul>-->
-          <!--</li>-->
-          <!--<li><router-link to="#"><i class="fa fa-circle-o"></i> 一级</router-link></li>-->
-          <!--</ul>-->
-          <!--</li>-->
-          <li>
-            <router-link to=""><i class="fa fa-book"></i> <span>文档</span></router-link>
           </li>
           <li class="header">标签</li>
           <li>
@@ -501,9 +439,60 @@
         }
       }
     },
+    methods: {
+      loginOut() {
+        let that = this
+        that.$STORE.remove('user')
+        that.$router.go(0)
+      }
+    },
     created() {
       let that = this
       that.$data.adminpath = that.path.indexOf('/') === -1 ? '/' + that.path : that.path
+    },
+    mounted() {
+      /* eslint-disable */
+      $('li.treeview').removeClass('active')
+      $('li > a.active').parents('li.treeview').addClass('active')
+      var menuLi =  $(".sidebar-menu li")
+      menuLi.click(function(){
+        var li = $(this)
+        var target = li.children('a').attr('href');
+        if(this.nodeName=='LI'){
+          $(".sidebar-menu li").removeClass('active')
+          li.addClass('active').parents('li').addClass('active')
+        }
+        return false
+      })
+      var t = $(".content-header .breadcrumb li.active").text(),
+          reg = new RegExp(t)
+      $.each(menuLi, function(i){
+        if(($(menuLi[i]).text()).length == t.length){
+          if(reg.test($(menuLi[i]).text())){
+            $(".sidebar-menu li").removeClass('active')
+            $(menuLi[i]).addClass('active').parents('li').addClass('active')
+            return false;
+          }
+        }
+      })
+      /* eslint-enable */
     }
   }
 </script>
+<style lang="" scoped>
+  .logout{
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translate(-50%,-50%);
+  }
+  .sidebar-collapse .logout {
+    transform: translate(0%,60%);
+    right: 0;
+    width: 100%;
+    text-align: center;
+  }
+  .sidebar-collapse .user-panel {
+    height: 70px;
+  }
+</style>

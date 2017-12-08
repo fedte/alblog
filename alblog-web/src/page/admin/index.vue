@@ -7,7 +7,7 @@
         <small>控制面板</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> 主页</a></li>
+        <li><a href="#"><i class="fa fa-dashboard"></i> 控制面板</a></li>
         <li class="active">仪表板</li>
       </ol>
     </section>

@@ -4,6 +4,9 @@ var Catetory   = models.Catetory;
 var tools      = require('../utils/tools');
 var _          = require('lodash');
 
+exports.getAll = function (callback) {
+  Catetory.find({deleted: false}, callback)
+}
 /**
  * @name create
  * @desc 创建一个新的分类
@@ -11,10 +14,9 @@ var _          = require('lodash');
  * @param {Function} callback 回调函数
  */
 exports.create = function (catetory, callback) {
-  let _catetory          = new Catetory()
-
-  _catetory.name = catetory.name
-  _catetory.type = catetory.type || ''
+  let _catetory   = new Catetory()
+  _catetory.name  = catetory.name
+  _catetory.type  = catetory.type || ''
   _catetory.alias = catetory.alias || catetory.name
 
   _catetory.save(callback)
@@ -27,7 +29,7 @@ exports.create = function (catetory, callback) {
  * @param {Function} callback 回调函数
  */
 exports.update = function (catetory, callback) {
-  Catetory.findById(catetory.id, function (err, catetorys) {
+  Catetory.findById(catetory.id, function (err, _catetory) {
     if (err) console.log(err)
 
     _catetory.name = catetory.name
@@ -45,12 +47,20 @@ exports.update = function (catetory, callback) {
  * @param {Function} callback 回调函数
  */
 exports.getByCatetoryId = function (id, callback) {
-  if (!id) {
-    return callback();
-  }
   Catetory.findById(id, callback)
 }
-
+/**
+ * 根据关键字，获取分类
+ * Callback:
+ * - err, 数据库异常
+ * - users, 用户列表
+ * @param {String} query 关键字
+ * @param {Object} opt 选项
+ * @param {Function} callback 回调函数
+ */
+exports.getCatetoryByQuery = function (query, opt, callback) {
+  Catetory.find(query, '', opt, callback);
+};
 /**
  * @name getDefault
  * @desc 获取默认分类ID

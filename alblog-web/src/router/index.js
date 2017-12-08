@@ -9,9 +9,11 @@ const AdminIndex = () => import('@/page/admin/index')
 const AdminLogin = () => import('@/page/admin/admin_login')
 
 const AdminSetting = () => import('@/page/admin/setting/basic')
+const AdminCatetoryNew = () => import('@/page/admin/catetory/new')
+const AdminCatetoryList = () => import('@/page/admin/catetory/list')
 
 const AdminArticleNew = () => import('@/page/admin/article/new')
-const AdminArticle = () => import('@/page/admin/article/list')
+const AdminArticleList = () => import('@/page/admin/article/list')
 
 export default new Router({
   mode: 'history',
@@ -25,8 +27,7 @@ export default new Router({
       path: '/admin',
       name: 'admin',
       component: AdminLayout,
-      alias: [''],
-      redirect: '/admin/index',
+      // redirect: '/admin/index',
       children: [
         {
           path: 'index',
@@ -44,23 +45,64 @@ export default new Router({
           component: AdminSetting
         },
         {
+          path: 'catetory',
+          name: 'adminCatetory',
+          component: AdminCatetoryList,
+          children: [
+            {
+              path: 'list',
+              name: 'adminCatetoryList',
+              component: AdminCatetoryList
+            }
+          ]
+        },
+        {
+          path: 'catetory/new',
+          name: 'adminCatetoryNew',
+          component: AdminCatetoryNew,
+          children: [
+            {
+              path: ':id',
+              name: 'adminCatetoryEdit',
+              component: AdminCatetoryNew
+            }
+          ]
+        },
+        {
           path: 'article',
           name: 'adminArticle',
-          component: AdminArticle,
+          component: AdminArticleList,
           children: [
+            {
+              path: 'list',
+              name: 'adminArticleList',
+              component: AdminArticleList
+            }
           ]
         },
         {
           path: 'article/new',
           name: 'adminArticleNew',
-          component: AdminArticleNew
-        },
-        {
-          path: 'article/list',
-          name: 'adminArticleList',
-          component: AdminArticle
+          component: AdminArticleNew,
+          children: [
+            {
+              path: ':id',
+              name: 'adminArticleEdit',
+              component: AdminArticleNew
+            }
+          ]
         }
+
       ]
+    },
+    {
+      path: '*',
+      name: 'NotFound',
+      component: HelloWorld,
+      // redirect: '/index',
+      meta: {
+        title: 'NotFound'
+      }
     }
   ]
 })

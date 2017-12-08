@@ -159,16 +159,20 @@ exports.login = function (req, res, next) {
           "last_login_at": user.last_login_at
         }
       }
-      req.session.user = entity.user
-      gen_session(user, res)
+      /**
+       * 暂时去除session、cookies登录状态
+       */
+      // req.session.user = entity.user
+      // gen_session(user, uuid, res)
+
       cache.set('user_' + user._id, uuid, tools.time.m() * 30 / 1000)
       return resJSON(res, true, 10000, '登录成功', entity)
     }));
   });
 };
 
-function gen_session(user, res) {
-  var auth_token = user._id + '$$$$'; // 以后可能会存储更多信息，用 $$$$ 来分隔
+function gen_session(user, uuid, res) {
+  let auth_token = user._id + '$$$$' + uuid // 以后可能会存储更多信息，用 $$$$ 来分隔
 
   res.cookie(config.auth_cookie_name, auth_token, config.cookie); //cookie 有效期30天
 }

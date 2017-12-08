@@ -25,11 +25,14 @@
     "ioredis": "^3.2.1",
     "lodash": "^4.17.4",
     "log4js": "^0.6.38",
+    "markdown-it": "^8.4.0",
     "moment": "^2.19.2",
     "mongoose": "^4.13.5",
+    "multiline": "^1.0.2",
     "node-uuid": "^1.4.8",
     "utility": "^1.13.1",
-    "validator": "^9.1.2"
+    "validator": "^9.1.2",
+    "xss": "^0.3.4"
   },
   "devDependencies": {
     "brace-expansion": "^1.1.8",

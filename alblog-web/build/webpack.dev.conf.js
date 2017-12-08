@@ -50,6 +50,12 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery'
+    }),
+    new webpack.LoaderOptionsPlugin({
+      vue: {
+        // use custom postcss plugins
+        postcss: [require('autoprefixer')()]
+      }
     })
   ]
 })

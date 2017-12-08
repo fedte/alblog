@@ -118,7 +118,7 @@ exports.getLimit5w = function (callback) {
  * @param {Function} callback 回调函数
  */
 exports.getArticle = function (id, callback) {
-  Article.findOne({_id: id}, callback);
+  Article.findOne({_id: id}, callback)
 };
 
 /**
@@ -137,7 +137,7 @@ exports.create = function (title, content, catetory, tag, authorId, callback) {
   article.content   = content
   article.tag       = tag
   article.author_id = authorId
-  article.catetory  = catetory
+  article.catetory_id  = catetory
 
-  article.save(callback);
+  article.save(callback)
 };

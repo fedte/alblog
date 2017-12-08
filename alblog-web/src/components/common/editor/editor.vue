@@ -1,6 +1,6 @@
 <template>
   <section>
-    <markdown-editor :autoinit="true" :highlight="true" :configs="configs"></markdown-editor>
+    <markdown-editor v-model="contentText" :autoinit="true" :highlight="true" :configs="configs" ref="markdownEditor"></markdown-editor>
     <!-- <markdownEditor></markdownEditor> -->
     <div class="modal fade" id="showImage" style="z-index: 10000">
       <div class="modal-dialog">
@@ -57,14 +57,17 @@
     name: 'editor',
     data() {
       return {
+        contentText: '',
+        contents: {},
         configs: {
           // toolbar: ['bold', 'italic', 'heading', '|', 'quote', 'code']
           autofocus: true,
           autoDownloadFontAwesome: false,
           autosave: {
-            enabled: true,
-            uniqueId: 'uniqueId',
-            delay: 5000
+            enabled: false,
+            uniqueId: this.uniqueId,
+            delay: 3000,
+            loaded: false
           },
           forceSync: true,
           promptURLs: true,
@@ -81,7 +84,48 @@
         }
       }
     },
-    props: {},
+    props: {
+      content: {
+        type: String,
+        default() {
+          return ''
+        }
+      },
+      uniqueId: {
+        type: String,
+        default() {
+          return 'alblog'
+        }
+      },
+      clearContent: {
+        type: Boolean,
+        default() {
+          return false
+        }
+      }
+    },
+    computed: {
+      simplemde () {
+        return this.$refs.markdownEditor.simplemde
+      }
+    },
+    watch: {
+      contentText(val) {
+        this.$data.contents = val
+        this.$emit('change', this.$data.contents, this.simplemde)
+        this.$STORE.set('alblog_' + this.uniqueId, val)
+        return val
+      },
+      content(val) {
+        this.contentText = val
+      },
+      clear(val) {
+        if (val) {
+          this.simplemde.clearAutosavedValue()
+          this.$STORE.remove('alblog_' + this.uniqueId)
+        }
+      }
+    },
     components: {
       markdownEditor
     },
@@ -211,12 +255,22 @@
           err = 0
         }
       }
-      /* eslint-enable*/
     },
-    created() {}
+    created() {
+    },
+    mounted () {
+      this.$data.val = this.$STORE.get('alblog_' + this.uniqueId)
+      if (this.$data.val !== '') {
+        this.$data.contentText = this.$data.val
+      }
+    }
   }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+  /deep/ .editor-toolbar.fullscreen ,
+  /deep/ .CodeMirror-fullscreen{
+    z-index: 9999;
+  }
   #showImage {
     .row {
       .btn {

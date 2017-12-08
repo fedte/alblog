@@ -3,7 +3,7 @@
     <!-- Content Wrapper. Contains page content -->
      <div class="row">
         <div class="center-block ">
-          <form class="form-signin" action="user/signin" method="post" id="login">
+          <form class="form-signin" method="post" id="login" :class="loginError ? 'animated shake' : ''">
             <div class="panel panel-default">
               <div class="panel-heading">欢迎回来</div>
               <div class="panel-body">
@@ -12,7 +12,7 @@
                     <span class="input-group-addon">
                       <i class="glyphicon glyphicon-user"></i>
                     </span>
-                    <input class="form-control" @blur="checks" v-model="name" type="text" placeholder="请输入用户名/邮箱" name="user" style="width:100%" data-id="user">
+                    <input class="form-control" v-model="userName"  @blur="checks" type="text" placeholder="请输入用户名/邮箱" name="user" style="width:100%" data-id="userName">
                   </div>
                 </div>
                 <div class="form-group">
@@ -20,10 +20,10 @@
                     <span class="input-group-addon fs_17">
                       <i class="glyphicon glyphicon-lock"></i>
                     </span>
-                    <input class="form-control" @blur="checks" v-model="pass" type="password" placeholder="请输入密码" name="pwd" style="width:100%" data-id="pwd">
+                    <input class="form-control" v-model="userPass" @blur="checks" type="password" placeholder="请输入密码" name="pwd" style="width:100%" data-id="userPass" v-on:keyup.enter="goLogin">
                   </div>
                 </div>
-                <button class="btn btn-primary btn-block" type="submit" disabled="disabled">登录</button>
+                <el-button class="btn btn-primary btn-block" type="primary" @click="goLogin" :disabled="isSubmit">登录</el-button>
               </div>
             </div>
           </form>
@@ -36,9 +36,6 @@
       </div>
   </div>
 </template>
-<script>
-   require('@/../static/default/css/animate.css')
-</script>
 
 <style scoped>
   .box {
@@ -89,90 +86,152 @@
   export default {
     data() {
       return {
-        name: '',
-        pass: ''
+        userName: '',
+        userPass: '',
+        errorCount: 0,
+        loginError: false
+      }
+    },
+    watch: {
+      user(val) {
+
+      },
+      loginError(val) {
+        let that = this
+        if (val) {
+          setTimeout(() => {
+            that.$data.loginError = !that.$data.loginError
+          }, 1000)
+        }
+      }
+    },
+    computed: {
+      isSubmit() {
+        let that = this
+        if (that.$data.userName !== '' && that.$data.userName.length >= 3 && that.$data.userPass !== '' && that.$data.userPass.length >= 6) {
+          return false
+        }
+        return true
       }
     },
     methods: {
       checks(e) {
         let that = this
-
+        let target = e.currentTarget.dataset
+        let val = that.$data[target.id]
+        let message = ''
+        if (target.id === 'userName') {
+          if (val == '') {
+            message = '用户名不能为空'
+          } else if (val.length < 3) {
+            message = '用户名的长度不能小于 3'
+          }
+        } else if (target.id === 'userPass') {
+          if (val == '') {
+            message = '密码不能为空'
+          } else if (val.length < 6) {
+            message = '密码的长度不能小于 6'
+          }
+        }
+        if (message !== '') {
+          that.$message({
+            showClose: true,
+            message: message,
+            type: 'warning'
+          })
+        }
+      },
+      goLogin() {
+        let that = this
+        let message = ''
+        if (that.$data.userName == '') {
+          message = '用户名不能为空'
+        } else if (that.$data.userName.length < 3) {
+          message = '用户名的长度不能小于 3'
+        } else if (that.$data.userPass == '') {
+          message = '密码不能为空'
+        } else if (that.$data.userPass.length < 6) {
+          message = '密码的长度不能小于 6'
+        }
+        if (message !== '') {
+          return that.$message({
+            showClose: true,
+            message: message,
+            type: 'warning'
+          })
+        }
+        that.$API.userLogin({
+          data: {
+            name: that.$data.userName,
+            pass: that.$data.userPass
+          },
+          method: 'POST',
+          success(res) {
+            let data = res.data
+            console.log('--------------')
+            console.log(data)
+            console.log('--------------')
+            if (data.code === 10000) {
+              that.$message({
+                showClose: true,
+                message: data.message,
+                type: 'success'
+              })
+              that.$data.user = data.entity.user
+              that.$STORE.set('user', data.entity.user)
+              that.$store.dispatch('setLogin', true)
+              that.checkAuth()
+              console.log('--------------')
+              console.log('登录成功')
+              console.log('--------------')
+            } else {
+              that.$data.loginError = true
+              that.$message({
+                showClose: true,
+                message: data.message,
+                type: 'error'
+              })
+            }
+          }
+        })
+      },
+      checkAuth() {
+        let that = this
+        if (that.$data.user && that.$data.user.uuid) {
+          that.$API.isAdmin({
+            data: {},
+            method: 'POST',
+            success(res) {
+              let data = res.data
+              let query = that.$route.query
+              if (data.code === 10000) {
+                that.$store.dispatch('setAdmin', true)
+                if (query.from && query.from !== '/admin/login') {
+                  that.$router.push(query.from)
+                } else {
+                  that.$router.push('/admin/index')
+                }
+              } else {
+                that.$message({
+                  showClose: true,
+                  message: data.message,
+                  type: 'info'
+                })
+                that.$store.dispatch('setAdmin', false)
+                that.$router.push('/')
+              }
+            }
+          })
+        }
       }
     },
     created() {
+      let that = this
+      that.$data.user = that.$STORE.get('user')
+      that.checkAuth()
     },
     mounted() {
-      /* eslint-disable */
-      $('#login input').blur(function() {
-        Test($(this).attr('id'), this)
-        $(this).keyup(function() {
-          Test($(this).attr('id'), this)
-        })
-      })
-      $('#login').submit(function() {
-        var name = $('#user').val(),
-          pwd = $('#pwd').val()
-        //console.log(name)
-        if (name != '' && pwd != '') {
-          $.post(
-            '/user/signin',
-            { 'user[name]': name, 'user[password]': pwd, 'user[isSubmit]': 1 },
-            function(res) {
-              if (res.signin) {
-                window.location.href = 'admin'
-              } else {
-                $('#login').addClass('animated shake')
-                setTimeout(function() {
-                  $('#login').removeClass('shake')
-                }, 1000)
-                if (res.err) {
-                  $('#pwd')
-                    .parent()
-                    .addClass('error')
-                    .removeClass('correct')
-                  if (res.strat) {
-                    $('#user')
-                      .parent()
-                      .addClass('error')
-                      .removeClass('correct')
-                  }
-                }
-              }
-            },
-            'json'
-          )
-        }
-        return false
-      })
-      function Test(name, target) {
-        var reg
-        if (name == 'user') {
-          reg = /^[\w\u4E00-\u9FA5]{4,20}$/.test($(target).val())
-        } else if (name == 'pwd') {
-          reg = $(target).val().length >= '{{pwlength}}'
-        }
-        if ($(target).attr('id') == name && !reg) {
-          $(target)
-            .parent()
-            .addClass('error')
-            .removeClass('correct')
-        } else {
-          $(target)
-            .parent()
-            .addClass('correct')
-            .removeClass('error')
-        }
-        if (
-          $('#login').find('.error').length <= 0 &&
-          $('#login').find('.correct').length >= $('#login input').length
-        ) {
-          $('#login button').removeAttr('disabled')
-        } else {
-          $('#login button').attr('disabled', true)
-        }
-      }
     }
-
   }
 </script>
 

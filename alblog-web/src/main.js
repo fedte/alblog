@@ -8,19 +8,107 @@ import '@/../static/common/bootstrap/css/bootstrap.min.css'
 import '@/../static/common/bootstrap/js/bootstrap.min.js'
 import '@/../static/common/bootstrap/css/ionicons.min.css'
 import '@/../static/common/bootstrap/css/font-awesome.min.css'
+import '@/../static/common/css/animate.css'
+
+import { Button, Select, Message, MessageBox, Pagination } from 'element-ui'
+// 引入API接口配置 Edit by falost
+import * as API from './api'
+// 引入公共方法 Edit by falost
+import * as Utils from './utils/utils'
+
+import Store from 'store'
 
 Vue.config.productionTip = true
 
+Vue.config.devtools = true
+// Vue.config.devtools = false
+
+Vue.component(Button.name, Button)
+Vue.component(Select.name, Select)
+Vue.component(Pagination.name, Pagination)
+
+Vue.prototype.$message = Message
+Vue.prototype.$messageBox = MessageBox
+
+// 全局请求API Edit by falost
+Vue.prototype.$API = API
+
+// 设置、获取 local Storage Edit by falost
+Vue.prototype.$STORE = Store
+
+// 全局公用方法 Edit by falost
+Vue.prototype.$utils = Utils
+
+Vue.prototype.$ISLOGIN = function (callback) {
+  let that = this
+  let user = that.$STORE.get('user')
+  let time = that.$STORE.get('time')
+  let callbackData
+    // console.log("time", time);
+    // console.log(typeof callback);
+
+  callback = callback || function () {}
+    // console.log("callback" , callback);
+
+  // console.log(user);
+
+  if (user && !Utils.isEmpty(user.uuid) && !Utils.isEmpty(user.id)) {
+    if (time === '' || time == null || time === undefined) {
+      that.$STORE.set('time', new Date().getTime())
+    } else {
+      // console.log(new Date().getTime(), (new Date().getTime() - time) / 1000);
+
+      // 上期访问时间差 by falost
+      let timeDiff = (new Date().getTime() - time) / 1000
+      if (timeDiff > 0) {
+        console.log('登录超时了')
+        that.$STORE.set('time', new Date().getTime())
+        that.$API.isLogin({
+          data: {
+            userId: user.id,
+            uuid: user.uuid
+          },
+          method: 'POST',
+          success (res) {
+            let data = res.data
+
+            if (data.code == 10000 && data.entity) {
+              // newFunction(that);
+              that.$store.dispatch('setLogin', true)
+                // console.log("请求回来", new Date())
+              callbackData = { isLogin: true }
+            } else {
+              that.$store.dispatch('setLogin', false)
+              // that.$dialog.toast({mes:"未登录" ,timeout:5000})
+              callbackData = { isLogin: false }
+            }
+            callback(callbackData)
+          }
+        })
+      } else {
+        that.$store.dispatch('setLogin', true)
+        callbackData = { isLogin: true }
+        console.log('登录状态正常')
+        callback(callbackData)
+      }
+    }
+  } else {
+    that.$store.dispatch('setLogin', false)
+    console.log('未登录')
+    callbackData = { isLogin: false }
+    callback(callbackData)
+  }
+}
 /* eslint-disable no-new */
-const vm = new Vue({
+
+const app = new Vue({
   el: '#app',
   router,
   template: '<App/>',
   components: { App }
 })
-console.log(vm)
-vm.$router.beforeEach((to, from, next) => {
+console.log(app)
+app.$router.beforeEach((to, from, next) => {
   console.log(to)
-
   next()
 })

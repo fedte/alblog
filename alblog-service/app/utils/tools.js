@@ -1,9 +1,9 @@
-
 const MD5 = require('utility').md5
 const bcrypt = require('bcryptjs')
 const moment = require('moment')
 const config = require('../../config')
 const uuid =  require('node-uuid')
+const _ = require('lodash')
 moment.locale('zh-cn'); // 使用中文
 
 // 格式化时间
@@ -68,11 +68,76 @@ exports.resJSON = function (res, success = false, code = 10000, message = '', en
 exports.uuid = function (loginName, pass) {
   return MD5(loginName + pass + config.user.salt + uuid() )
 }
-
+/**
+ * 获取基础时间值
+ * @name M 月
+ * @name D 天
+ * @name H 小时
+ * @name m 分钟
+ * @name s 秒
+ * @param {Boolean} s 单位 true为s false为ms 默认为false
+ */
 exports.time = {
-  M: () => 1000 * 60 * 60 * 24 *30,
-  D: () => 1000 * 60 * 60 * 24,
-  H: () => 1000 * 60 * 60,
-  m: () => 1000 * 60,
-  s: () => 1000
- }
+  M: (s = false) => s ? 60 * 60 * 24 * 30 : 1000 * 60 * 60 * 24 * 30,
+  D: (s = false) => s ? 60 * 60 * 24 : 1000 * 60 * 60 * 24,
+  H: (s = false) => s ? 60 * 60 : 1000 * 60 * 60,
+  m: (s = false) => s ? 60 : 1000 * 60,
+  s: (s = false) => s ? 1 : 1000
+}
+/**
+ * 根据文本内容，替换为数据库中的数据
+ * Callback:
+ * - err, 数据库异常
+ * - text, 替换后的文本内容
+ * @param {String} text 文本内容
+ * @param {Function} callback 回调函数
+ */
+exports.linkUsers = function (text, callback) {
+  let users = fetchUsers(text);
+  for (let i = 0, l = users.length; i < l; i++) {
+    let name = users[i];
+    text = text.replace(new RegExp('@' + name + '\\b(?!\\])', 'g'), '[@' + name + '](/user/' + name + ')');
+  }
+  if (!callback) {
+    return text;
+  }
+  return callback(null, text);
+};
+
+/**
+ * 从文本中提取出@username 标记的用户名数组
+ * @param {String} text 文本内容
+ * @return {Array} 用户名数组
+ */
+const fetchUsers = function (text) {
+  if (!text) {
+    return [];
+  }
+
+  let ignoreRegexs = [
+    /```.+?```/g, // 去除单行的 ```
+    /^```[\s\S]+?^```/gm, // ``` 里面的是 pre 标签内容
+    /`[\s\S]+?`/g, // 同一行中，`some code` 中内容也不该被解析
+    /^    .*/gm, // 4个空格也是 pre 标签，在这里 . 不会匹配换行
+    /\b\S*?@[^\s]*?\..+?\b/g, // somebody@gmail.com 会被去除
+    /\[@.+?\]\(\/.+?\)/g, // 已经被 link 的 username
+  ];
+
+  ignoreRegexs.forEach(function (ignore_regex) {
+    text = text.replace(ignore_regex, '');
+  });
+
+  let results = text.match(/@[a-z0-9\-_]+\b/igm);
+  let names = [];
+  if (results) {
+    for (let i = 0, l = results.length; i < l; i++) {
+      let s = results[i];
+      //remove leading char @
+      s = s.slice(1);
+      names.push(s);
+    }
+  }
+  names = _.uniq(names);
+  return names;
+};
+exports.fetchUsers = fetchUsers;

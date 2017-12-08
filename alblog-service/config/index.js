@@ -21,7 +21,7 @@ let config = {
   user: {
     active: true, // 默认用户是否为激活状态
     reg: true, // 是否允许注册新用户
-    salt: 'djklfjoptie'
+    salt: 'djklfjoptie' // 请谨慎修改此值
   },
   // 管理员设置
   admins: {

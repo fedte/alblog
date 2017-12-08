@@ -21,13 +21,17 @@ app.use(require('connect-multiparty')())
 // cookie处理 by falost
 app.use(cookieParser())
 // session处理
-// app.use(session.check(),session.init())
+app.use(session.check(),session.init())
 
 // router by falost
 app.use('/admin/api/v1', cors(), apiAdminRouter)
 app.use('/api/v1', cors(), apiRouter)
 
 app.listen(config.port, function () {
+  console.log('----------------')
+  console.log()
   console.log('启动成功')
   console.log('listen port to :' + config.port)
+  console.log()
+  console.log('------ End------')
 })
