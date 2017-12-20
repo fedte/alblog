@@ -1,11 +1,11 @@
-var mongoose  = require('mongoose');
-var BaseModel = require("./base_model");
+const mongoose  = require('mongoose');
+const BaseModel = require("./base_model");
 
-var Schema    = mongoose.Schema;
-var utility   = require('utility');
-var _         = require('lodash');
+const Schema    = mongoose.Schema;
+const utility   = require('utility');
+const _         = require('lodash');
 
-var UserSchema = new Schema({
+const UserSchema = new Schema({
   name: { type: String},
   loginname: { type: String},
   pass: { type: String },
@@ -42,7 +42,7 @@ var UserSchema = new Schema({
 
 UserSchema.plugin(BaseModel);
 UserSchema.virtual('avatar_url').get(function () {
-  var url = this.avatar || ('https://gravatar.com/avatar/' + utility.md5(this.email.toLowerCase()) + '?size=48')
+  let url = this.avatar || ('https://gravatar.com/avatar/' + utility.md5(this.email.toLowerCase()) + '?size=48')
 
   // www.gravatar.com 被墙
   url = url.replace('www.gravatar.com', 'gravatar.com')
@@ -65,7 +65,7 @@ UserSchema.index({githubId: 1});
 UserSchema.index({accessToken: 1});
 
 UserSchema.pre('save', function(next){
-  var now = new Date();
+  let now = new Date();
   this.update_at = now;
   next();
 });

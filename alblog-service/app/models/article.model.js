@@ -14,7 +14,7 @@ const ArticleSchema = new Schema({
   tag: { type: Array, default: [] },
   top: { type: Boolean, default: false },
   reply_count: { type: Number, default: 0 },
-  collect_count: { type: Number, default: 0 },
+  digg_count: { type: Number, default: 0 },
   visit_count: { type: Number, default: 0 },
   create_at: { type: Date, default: Date.now },
   update_at: { type: Date, default: Date.now },

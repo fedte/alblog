@@ -45,7 +45,7 @@ exports.get = function(req, res, next) {
         return resJSON(res, true, 10008, 'ID不存在或已被删除')
       }
       article = _.pick(article, ['id', 'author_id', 'catetory_id', 'catetory', 'content', 'title', 'tag', 'good', 'top', 'reply_count', 'visit_count', 'create_at', 'author'])
-      cache.set('article_' + articleId, article, tools.time.M(true))
+      // cache.set('article_' + articleId, article, tools.time.M(true))
       return resJSON(res, true, 10000, '获取文章成功', {article})
     })
   })
@@ -118,7 +118,7 @@ exports.list = function (req, res, next) {
     });
     ep.after('all', articles.length, function (caaa) {
       articles = articles.map(function (article) {
-        article = _.pick(article, ['id', 'author_id', 'catetory_id', 'catetory', 'content', 'title', 'good', 'top', 'reply_count', 'visit_count', 'create_at', 'author'])
+        article = _.pick(article, ['id', 'author_id', 'catetory_id', 'catetory', 'tag', 'content', 'title', 'good', 'top', 'reply_count', 'visit_count', 'create_at', 'author'])
 
         cache.set('article_' + article.id, article, tools.time.M(true))
         return article
@@ -164,8 +164,8 @@ exports.create = function (req, res, next) {
   let message
   if (title === '') {
     message = '标题不能为空'
-  } else if (title.length < 5) {
-    message = '标题不可少于5个字符'
+  } else if (title.length < 3) {
+    message = '标题不可少于3个字符'
   } else if (title.length > 100) {
     message = '标题太长了'
   } else if (content === '') {
@@ -194,17 +194,20 @@ exports.create = function (req, res, next) {
   })
 
   ep.on('article_save', function () {
+    // 创建文章内容
     ArticleProxy.create(title, content, catetory, tag, userId, function (err, article) {
       if (err) {
         return next(err)
       }
       article = _.pick(article, ['id', 'author_id', 'catetory_id', 'catetory', 'content', 'title', 'tag', 'good', 'top', 'reply_count', 'visit_count', 'create_at', 'author'])
-
+      // 更新分类信息
       CatetoryProxy.getByCatetoryId(catetory, ep.done(function (catetory) {
-        catetory.content_count.push(article.id)
-        catetory.save()
-        // 获取分类信息
-        article.catetory = _.pick(catetory, ['name', 'alias'])
+        if (catetory) {
+          catetory.content_count.push(article.id)
+          catetory.save()
+          // 获取分类信息
+          article.catetory = _.pick(catetory, ['name', 'alias'])
+        }
         ep.emit('catetory_saved', article)
       }))
 
@@ -215,8 +218,6 @@ exports.create = function (req, res, next) {
         article.author = _.pick(user, ['loginname', 'avatar_url'])
         ep.emit('user_saved', article)
       }))
-      //发送at消息
-      // at.sendMessageToMentionUsers(content, topic.id, req.user.id);
     });
   })
   // 判断是否有分类 by falost
@@ -232,7 +233,6 @@ exports.create = function (req, res, next) {
   } else {
     ep.emit('article_save')
   }
-
 }
 
 /**
@@ -260,8 +260,8 @@ exports.update = function (req, res, next) {
     message = '文章ID不能为空'
   } else if (title === '') {
     message = '标题不能为空'
-  } else if (title.length < 5) {
-    message = '标题不可少于5个字符';
+  } else if (title.length < 3) {
+    message = '标题不可少于3个字符';
   } else if (title.length > 100) {
     message = '标题太长了'
   } else if (content === '') {
@@ -310,8 +310,10 @@ exports.update = function (req, res, next) {
       if (catetory != oldCatetory) {
         // 删除原有分类内容
         CatetoryProxy.getByCatetoryId(oldCatetory, ep.done(function (catetory) {
-          catetory.content_count.pop(article.id)
-          catetory.save()
+          if (catetory) {
+            catetory.content_count.pop(article.id)
+            catetory.save()
+          }
         }))
         // 更新修改之后的分类内容
         CatetoryProxy.getByCatetoryId(catetory, ep.done(function (catetory) {
@@ -340,7 +342,7 @@ exports.update = function (req, res, next) {
       } else {
         return resJSON(res, true, 10205, '更新失败')
       }
-    })
+    }, next)
   } else {
     ep.emit('article_save')
   }

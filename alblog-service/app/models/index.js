@@ -14,13 +14,15 @@ mongoose.connect(mongoConfig, {
     logger.database('connect to %s error: ', config.db, err.message)
     process.exit(1)
   }
-});
+})
 
 // models
 require('./user.model')
 require('./article.model')
 require('./catetory.model')
+require('./comment.model')
 
 exports.User         = mongoose.model('User')
 exports.Article      = mongoose.model('Article')
-exports.Catetory      = mongoose.model('Catetory')
+exports.Catetory     = mongoose.model('Catetory')
+exports.Comment      = mongoose.model('Comment')

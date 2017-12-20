@@ -1,9 +1,12 @@
-var EventProxy = require('eventproxy');
-var models     = require('../models');
-var Catetory   = models.Catetory;
-var tools      = require('../utils/tools');
-var _          = require('lodash');
-
+const EventProxy = require('eventproxy');
+const models     = require('../models');
+const Catetory   = models.Catetory;
+const tools      = require('../utils/tools');
+const _          = require('lodash');
+/**
+ * 获取所有分类列表
+ * @param {Function} callback 回调函数
+ */
 exports.getAll = function (callback) {
   Catetory.find({deleted: false}, callback)
 }
@@ -59,15 +62,16 @@ exports.getByCatetoryId = function (id, callback) {
  * @param {Function} callback 回调函数
  */
 exports.getCatetoryByQuery = function (query, opt, callback) {
-  Catetory.find(query, '', opt, callback);
+  Catetory.find(query, '', opt, callback)
 };
 /**
  * @name getDefault
  * @desc 获取默认分类ID
  * @param {Function} callback 回调函数
+ * @param {Function} next 错误处理
  */
-exports.getDefault = function (callback) {
-  Catetory.findOne({name: 'default'}, function(err, catetory) {
+exports.getDefault = function (callback, next) {
+  Catetory.findOne({isDefault: true}, function(err, catetory) {
     if (err) {
       next(err)
     }
@@ -75,10 +79,9 @@ exports.getDefault = function (callback) {
       let _catetory = new Catetory()
       _catetory.name = 'default'
       _catetory.alias = '默认目录'
+      _catetory.isDefault = true
       _catetory.save(function(err, catetory) {
-        if (err) {
-          next(err)
-        }
+        if (err) { next(err) }
         callback(catetory.id)
       })
     } else {

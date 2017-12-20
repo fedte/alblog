@@ -93,7 +93,7 @@ exports.signup = function (req, res, next) {
 
     }));
   });
-};
+}
 /**
  * 用户登录
  * @param {HttpRequest} req
@@ -169,7 +169,7 @@ exports.login = function (req, res, next) {
       return resJSON(res, true, 10000, '登录成功', entity)
     }));
   });
-};
+}
 
 function gen_session(user, uuid, res) {
   let auth_token = user._id + '$$$$' + uuid // 以后可能会存储更多信息，用 $$$$ 来分隔

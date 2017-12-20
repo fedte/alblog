@@ -13,11 +13,12 @@ const CatetorySchema = new Schema({
   content_count: [{ type: ObjectId, ref: 'Article' }],
   create_at: { type: Date, default: Date.now },
   update_at: { type: Date, default: Date.now },
-  deleted: { type: Boolean, default: false }
-});
+  deleted: { type: Boolean, default: false },
+  isDefault: { type: Boolean, default: false }
+})
 
 CatetorySchema.plugin(BaseModel);
 CatetorySchema.index({create_at: -1});
-CatetorySchema.index({name: 1}, {unique: true});
+CatetorySchema.index({name: 1}, {unique: true})
 
 mongoose.model('Catetory', CatetorySchema);
