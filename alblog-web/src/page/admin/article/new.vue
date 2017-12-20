@@ -39,7 +39,7 @@
                   <div class="col-xs-12 col-md-8" >
                     <editor uniqueId="article" :clear="clearContent" :content="article.content" @change="editCallback"></editor>
                   </div>
-                  <div class="hidden-xs col-md-4 flex-center">
+                  <div class="hidden-xs col-md-4">
                     <div class="right-tips-text text-muted">
                       文章正文，为必填项，长度最低为(10个字符)
                     </div>
@@ -90,11 +90,6 @@
               </div>
             </div>
           </form>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <h3 class="text-center text-muted">尚未添加分类，请前往 “全局 - 分类管理” 中添加文章分类</h3>
         </div>
       </div>
     </section>
@@ -159,7 +154,7 @@
       selected(e) {
         let that = this
         let data = e.currentTarget.dataset
-        that.$data.article.catetory = that.$data.catetoryList[data.index]._id
+        that.$data.article.catetory = that.$data.catetoryList[data.index].id
 
         that.$data.catetoryName = that.$data.catetoryList[data.index].alias
 
@@ -277,7 +272,7 @@
               let articleCatetory = that.$data.article.catetory_id || ''
               for (let index = 0; index < catetoryList.length; index++) {
                 let child = catetoryList[index]
-                if (child._id == articleCatetory) {
+                if (child.id == articleCatetory) {
                   catetoryList[index].checked = true
                   that.$data.oldCheckedIndex = index
                   that.$data.catetoryName = child.alias

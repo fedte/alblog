@@ -14,7 +14,7 @@
     <!-- Main content -->
     <section class="content">
       <!-- Small boxes (Stat box) -->
-      <div class="row">
+      <div class="row" v-if="dataList.length > 0 && dataList !== null">
         <div class="col-xs-12">
           <div class="panel panel-default list">
             <div class="panel-heading">文章列表</div>
@@ -66,6 +66,11 @@
               </el-pagination>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="row" v-else>
+        <div class="col-xs-12">
+          <h3 class="text-center text-muted">暂时没有文章，请前往 “ 内容 - <router-link to="/admin/article/new">文章发布</router-link> ” 中添加发布文章</h3>
         </div>
       </div>
     </section>

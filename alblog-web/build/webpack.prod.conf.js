@@ -36,7 +36,10 @@ const webpackConfig = merge(baseWebpackConfig, {
     // UglifyJs do not support ES6+, you can also use babel-minify for better treeshaking: https://github.com/babel/minify
     new webpack.optimize.UglifyJsPlugin({
       compress: {
-        warnings: false
+        warnings: false,
+        dead_code: true , // 移除没被引用的代码
+        drop_debugger: true, // 移除项目中的debugeer
+        drop_console: true // 移除console.*的方法
       },
       sourceMap: config.build.productionSourceMap,
       parallel: true

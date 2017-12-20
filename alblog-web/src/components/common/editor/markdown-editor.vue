@@ -7,7 +7,7 @@
 <script>
   // import { SimpleMDE } from '@/utils/simplemde/'
   import marked from 'marked'
-  import '@/utils/simplemde/debug/simplemde'
+  import '@/utils/simplemde/simplemde'
 
   export default {
     name: 'markdown-editor',

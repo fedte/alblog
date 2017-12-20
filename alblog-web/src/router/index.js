@@ -15,13 +15,49 @@ const AdminCatetoryList = () => import('@/page/admin/catetory/list')
 const AdminArticleNew = () => import('@/page/admin/article/new')
 const AdminArticleList = () => import('@/page/admin/article/list')
 
+const WebLayout = () => import('@/page/web/layout')
+const WebArticleInfo = () => import('@/page/web/article/article')
+const WebArticleList = () => import('@/page/web/article/list')
+const WebIndex = () => import('@/page/web/index')
+const WebTagsList = () => import('@/page/web/tags/list')
+const WebTag = () => import('@/page/web/tags/tag')
+
 export default new Router({
   mode: 'history',
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      name: 'WebLayout',
+      component: WebLayout,
+      children: [
+        {
+          path: 'home',
+          name: 'home',
+          component: WebIndex,
+          alias: ['/']
+        },
+        {
+          path: 'article/list',
+          name: 'articleList',
+          component: WebArticleList,
+          alias: ['blog']
+        },
+        {
+          path: 'article/:id',
+          name: 'articleInfo',
+          component: WebArticleInfo
+        },
+        {
+          path: 'tags',
+          name: 'tagsList',
+          component: WebTagsList
+        },
+        {
+          path: 'tags/:tag',
+          name: 'tags',
+          component: WebTag
+        }
+      ]
     },
     {
       path: '/admin',

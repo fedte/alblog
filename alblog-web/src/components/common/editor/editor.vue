@@ -263,6 +263,7 @@
       if (this.$data.val !== '') {
         this.$data.contentText = this.$data.val
       }
+      hljs.initHighlightingOnLoad()
     }
   }
 </script>

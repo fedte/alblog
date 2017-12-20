@@ -5,27 +5,43 @@ import App from './App'
 import router from './router'
 
 import '@/../static/common/bootstrap/css/bootstrap.min.css'
-import '@/../static/common/bootstrap/js/bootstrap.min.js'
-import '@/../static/common/bootstrap/css/ionicons.min.css'
-import '@/../static/common/bootstrap/css/font-awesome.min.css'
 import '@/../static/common/css/animate.css'
-
-import { Button, Select, Message, MessageBox, Pagination } from 'element-ui'
+import '@/scss/element-variables.scss'
+import { Input, Button, Select, Message, MessageBox, Pagination, Popover, Dialog } from 'element-ui'
 // 引入API接口配置 Edit by falost
 import * as API from './api'
 // 引入公共方法 Edit by falost
 import * as Utils from './utils/utils'
 
 import Store from 'store'
+// 骨架
+import VueContentPlaceholders from 'vue-content-placeholders'
+
+import hljs from 'highlight.js'
+import 'highlight.js/styles/atom-one-dark.css' // 样式文件
 
 Vue.config.productionTip = true
 
 Vue.config.devtools = true
 // Vue.config.devtools = false
 
+// 指令
+Vue.directive('highlight', function (el) {
+  let blocks = el.querySelectorAll('pre code')
+  blocks.forEach((block) => {
+    hljs.highlightBlock(block)
+  })
+})
+
+// 组件
+Vue.component(Input.name, Input)
 Vue.component(Button.name, Button)
 Vue.component(Select.name, Select)
 Vue.component(Pagination.name, Pagination)
+Vue.component(Popover.name, Popover)
+Vue.component(Dialog.name, Dialog)
+// 插件
+Vue.use(VueContentPlaceholders)
 
 Vue.prototype.$message = Message
 Vue.prototype.$messageBox = MessageBox

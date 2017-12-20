@@ -20,7 +20,9 @@
 </template>
 <script>
   // import '/static/libs/dialog/dialog.js'
-
+import '@/../static/common/bootstrap/js/bootstrap.min.js'
+import '@/../static/common/bootstrap/css/ionicons.min.css'
+import '@/../static/common/bootstrap/css/font-awesome.min.css'
   import nav from './nav'
   import { mapGetters } from 'vuex'
 

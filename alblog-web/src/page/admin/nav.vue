@@ -303,7 +303,7 @@
             </router-link>
           </li>
           <!-- 全局设置 -->
-          <li class="treeview">
+          <li class="treeview" v-if="false">
             <a href="javascript:;">
               <i class="fa fa-files-o"></i> <span>全局</span> <i class="fa fa-angle-left pull-right"></i>
             </a>
@@ -316,9 +316,6 @@
               </li>
               <li v-if="false">
                 <router-link exact active-class="active" :to="adminpath + '/setting/seo'"><i class="fa fa-circle-o"></i>SEO设置</router-link>
-              </li>
-              <li>
-                <router-link exact active-class="active" :to="adminpath + '/catetory/list'"><i class="fa fa-circle-o"></i>分类管理</router-link>
               </li>
             </ul>
           </li>
@@ -343,6 +340,12 @@
             <router-link to="pages/widgets.html">
               <i class="fa fa-th"></i> <span>窗口小部件</span>
               <small class="label pull-right bg-green">新的</small>
+            </router-link>
+          </li>
+          <li>
+            <router-link exact active-class="active" :to="adminpath + '/catetory/list'">
+              <i class="fa fa-database"></i>
+              <span>分类管理</span>
             </router-link>
           </li>
           <!-- 文章内容管理 -->
