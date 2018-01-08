@@ -16,7 +16,7 @@ const tools      = require('../utils/tools')
  * @param {Function} callback 回调函数
  */
 exports.getReply = function (id, callback) {
-  Reply.findOne({_id: id}, callback);
+  Comment.findOne({_id: id}, callback);
 };
 
 /**
@@ -27,36 +27,18 @@ exports.getReply = function (id, callback) {
  * @param {String} id 回复ID
  * @param {Function} callback 回调函数
  */
-exports.getReplyById = function (id, callback) {
+exports.getCommentById = function (id, callback) {
   if (!id) {
     return callback(null, null);
   }
-  Reply.findOne({_id: id}, function (err, reply) {
+  Comment.findOne({_id: id}, function (err, reply) {
     if (err) {
       return callback(err);
     }
     if (!reply) {
       return callback(err, null);
     }
-
-    var author_id = reply.author_id;
-    User.getUserById(author_id, function (err, author) {
-      if (err) {
-        return callback(err);
-      }
-      reply.author = author;
-      // TODO: 添加更新方法，有些旧帖子可以转换为markdown格式的内容
-      if (reply.content_is_html) {
-        return callback(null, reply);
-      }
-      at.linkUsers(reply.content, function (err, str) {
-        if (err) {
-          return callback(err);
-        }
-        reply.content = str;
-        return callback(err, reply);
-      });
-    });
+    return callback(null, reply);
   });
 };
 
@@ -68,8 +50,8 @@ exports.getReplyById = function (id, callback) {
  * @param {String} id 主题ID
  * @param {Function} callback 回调函数
  */
-exports.getCommentsByArticleId = function (id, callback) {
-  Comment.find({article_id: id, deleted: false}, '', {sort: 'create_at'}, function (err, comments) {
+exports.getCommentsByArticleId = function (id, opt, callback) {
+  Comment.find({article_id: id, deleted: false}, '', opt, function (err, comments) {
     if (err) {
       return callback(err)
     }
@@ -79,34 +61,12 @@ exports.getCommentsByArticleId = function (id, callback) {
 
     let ep = new EventProxy()
     callback(null, comments)
-    ep.after('reply_find', comments.length, function () {
-    })
-    /* for (let j = 0; j < comments.length; j++) {
-      (function (i) {
-        let author_id = comments[i].author_id
-        User.getUserById(author_id, function (err, author) {
-          if (err) {
-            return callback(err)
-          }
-          comments[i].author = author || { _id: '' }
-          if (comments[i].content_is_html) {
-            return ep.emit('reply_find')
-          }
-          tools.linkUsers(comments[i].content, function (err, str) {
-            if (err) {
-              return callback(err)
-            }
-            comments[i].content = str
-            ep.emit('reply_find')
-          })
-        })
-      })(j)
-    } */
   })
 }
 
 /**
- * 创建并保存一条回复信息
+ * 创建并保存一条回复信息 
+ * @author falost
  * @param {String} content 回复内容
  * @param {String} articleId 主题ID
  * @param {String} author 评论作者对象
@@ -121,7 +81,7 @@ exports.save = function (content, articleId, author, replyId, callback) {
   let comment       = new Comment()
   comment.content   = content
   comment.article_id  = articleId
-  comment.author_nmae = author.name || ''
+  comment.author_name = author.name || ''
   comment.author_email = author.email || ''
   comment.author_website = author.website || ''
 
@@ -139,7 +99,7 @@ exports.save = function (content, articleId, author, replyId, callback) {
  * @param callback 回调函数
  */
 exports.getLastReplyByTopId = function (articleId, callback) {
-  Reply.find({topic_id: articleId, deleted: false}, '_id', {sort: {create_at : -1}, limit : 1}, callback);
+  Comment.find({topic_id: articleId, deleted: false}, '_id', {sort: {create_at : -1}, limit : 1}, callback);
 };
 
 exports.getRepliesByAuthorId = function (authorId, opt, callback) {
@@ -147,10 +107,10 @@ exports.getRepliesByAuthorId = function (authorId, opt, callback) {
     callback = opt;
     opt      = null;
   }
-  Reply.find({author_id: authorId}, {}, opt, callback);
+  Comment.find({author_id: authorId}, {}, opt, callback);
 };
 
-// 通过 author_id 获取回复总数
-exports.getCountByAuthorId = function (authorId, callback) {
-  Reply.count({author_id: authorId}, callback);
+// 通过 article_id 获取回复总数
+exports.getCountByArticleId = function (articleId, callback) {
+  Comment.count({article_id: articleId}, callback);
 };

@@ -53,7 +53,7 @@
                         <span class="catetory-name" @click="changeCatetory">{{catetoryName}}</span>
                         <i class="fa fa-sort-down"></i>
                         <div class="catetory-list" v-show="showCatetoryList" >
-                          <span data-name="catetory" v-for="(item,index) in catetoryList" @click="selected" :data-index="index" :class="item.checked ? 'selected' : ''">{{item.alias}}</span>
+                          <span data-name="catetory" v-for="(item,index) in catetoryList" @click="selected" :key="index" :data-index="index" :class="item.checked ? 'selected' : ''">{{item.alias}}</span>
                         </div>
                       </div>
                     </div>
@@ -186,7 +186,7 @@
             title: that.$data.article.title,
             content: that.$data.article.content,
             tag: that.$data.article.tag,
-            catetory: that.$data.article.catetory
+            catetory: that.$data.article.catetory_id
           },
           method: method,
           success(res) {
@@ -240,6 +240,7 @@
               article.tag = article.tag.join(',')
               that.$data.article = article
               that.$data.tmp = JSON.stringify(article)
+              that.getCatetoryList()
             } else {
               that.$message({
                 message: data.message,
@@ -286,7 +287,7 @@
         })
       }
     },
-    created () {
+    async created () {
       let that = this
       let params = that.$route.params
       console.log('--------------')
@@ -295,11 +296,12 @@
       if (params.id) {
         that.$data.id = params.id
         that.$data.update = true
-        that.getArticleInfo()
+        await that.getArticleInfo()
+        // await that.getCatetoryList()
       } else {
         that.$data.id = ''
+        await that.getCatetoryList()
       }
-      that.getCatetoryList()
     },
     mounted () {
     }

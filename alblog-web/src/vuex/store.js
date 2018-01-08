@@ -6,12 +6,15 @@ import Vuex from 'vuex'
 // 用户 by falost
 import User from './modules/user'
 
+import Site from './modules/site'
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   // actions,
   // getters,
   modules: {
-    User
+    User,
+    Site
   }
 })

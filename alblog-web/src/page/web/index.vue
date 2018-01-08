@@ -60,7 +60,7 @@
             </div>
             <div class="right">
               <ul class="skill_list" >
-                <li v-for="(item,index) in skills"><span :style="'background-color:' + tagBgColor()  + (showSpot ? ';width:' + item.spot * 2 +'px' : '')">{{showSpot ? item.name : ''}}</span ><span v-show="showSpot">{{item.spot}}点</span></li>
+                <li v-for="(item,index) in skills" :key="item"><span :style="'background-color:' + tagBgColor()  + (showSpot ? ';width:' + item.spot * 2 +'px' : '')">{{showSpot ? item.name : ''}}</span ><span v-show="showSpot">{{item.spot}}点</span></li>
               </ul>
             </div>
           </div>
@@ -271,7 +271,9 @@
         // 监听鼠标滚轮事件
         window.onscroll = function() {
           let skill = document.querySelector('.skill')
-
+          if (!skill) {
+            return false
+          }
           let scrollTop
           if (document.documentElement && document.documentElement.scrollTop) {
             scrollTop = document.documentElement.scrollTop

@@ -1,11 +1,13 @@
-var EventProxy = require('eventproxy');
-var models     = require('../models');
-var Article    = models.Article;
-var User       = require('./user');
-// var Reply      = require('./reply');
-var tools      = require('../utils/tools');
-var _          = require('lodash');
+const EventProxy = require('eventproxy');
+const models     = require('../models');
+const Article    = models.Article;
 
+// const Reply      = require('./reply');
+const tools      = require('../utils/tools');
+const _          = require('lodash');
+
+const CatetoryProxy= require('./catetory')
+const UserProxy    = require('./user')
 
 /**
  * 根据主题ID获取主题
@@ -105,22 +107,55 @@ exports.getArticleByQuery = function (query, opt, callback) {
       Reply.getReplyById(topic.last_reply, ep.done('reply'));
     });
   });
-};
+}
 
 // for sitemap
 exports.getLimit5w = function (callback) {
   Article.find({deleted: false}, '_id', {limit: 50000, sort: '-create_at'}, callback);
-};
+}
 
 /**
  * 根据文章ID，查找一条文章
  * @param {String} id 文章ID
  * @param {Function} callback 回调函数
  */
-exports.getArticle = function (id, callback) {
-  Article.findOne({_id: id}, callback)
-};
-
+exports.getArticle = function (id, type, callback) {
+  let ep = EventProxy()
+  if (typeof type === 'function') {
+    callback = type;
+    type  = null;
+  }
+  Article.findOne({_id: id}, function (err, article) {
+    // callback(err, article)
+    if (err) {
+      return callback(err)
+    }
+    if (!article || article.deleted) {
+      return callback(null, article)
+    }
+    if (type === 'get') {
+      article.visit_count += 1
+    } else if (type === 'comment') {
+      article.reply_count += 1
+    }
+    article.save()
+    ep.all('author_get', 'catetory_get', function (author, catetory){
+      article = _.extend(author, catetory)
+      article = _.pick(article, ['id', 'author_id', 'catetory_id', 'catetory', 'content', 'title', 'tag', 'good', 'top', 'reply_count', 'visit_count', 'digg_count', 'create_at', 'author'])
+      
+      return callback(null, article)
+    })
+    UserProxy.getUserById(article.author_id, ep.done(function (author) {
+      article.author = _.pick(author, ['loginname', 'avatar_url'])
+      ep.emit('author_get', article)
+    }))
+    CatetoryProxy.getByCatetoryId(article.catetory_id, ep.done(function (catetory) {
+      // 获取分类信息
+      article.catetory = _.pick(catetory, ['name', 'alias'])
+      ep.emit('catetory_get', article)
+    }))
+  })
+}
 /**
  * @name create
  * @desc 添加创建文章

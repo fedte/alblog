@@ -42,7 +42,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr :class="'item-id-'+ item.id" v-for="(item,index) in dataList">
+                        <tr :class="'item-id-'+ item.id" v-for="(item,index) in dataList" :key="index">
                           <td>{{item.alias}}</td>
                           <td>{{item.name}}</td>
                           <td>{{item.content_count.length}}</td>

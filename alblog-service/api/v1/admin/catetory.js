@@ -16,6 +16,7 @@ const CatetoryProxy= require(ROOT + '/app/proxy').Catetory
 /**
  * @name getALL
  * @desc 获取所有分类列表
+ * @author falost
  * @param {HttpRequest} req
  * @param {HttpResponse} res
  * @param {Function} next
@@ -42,6 +43,7 @@ exports.getAll = function (req, res, next) {
 /**
  * @name create
  * @desc 新增分类
+ * @author falost
  * @param {HttpRequest} req
  * @param {HttpResponse} res
  * @param {Function} next
@@ -92,6 +94,7 @@ exports.create = function (req, res, next) {
 /**
  * @name upadte
  * @desc 更新分类
+ * @author falost
  * @param {HttpRequest} req
  * @param {HttpResponse} res
  * @param {Function} next
@@ -140,6 +143,7 @@ exports.update = function (req, res, next) {
 /**
  * @name get
  * @desc 获取分类详情
+ * @author falost
  * @param {HttpRequest} req
  * @param {HttpResponse} res
  * @param {Function} next

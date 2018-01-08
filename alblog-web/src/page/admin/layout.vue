@@ -12,7 +12,7 @@
         <div class="pull-right hidden-xs">
           <b>版本</b> 2.0
         </div>
-        <strong>Copyright &copy; 2015-2016 <a href="http://www.fedte.cc"target="_blank">FEDTE 工作室</a>.</strong> 保留所有权利.
+        <strong>Copyright &copy; 2015-2016 <a href="http://www.fedte.cc" target="_blank">FEDTE 工作室</a>.</strong> 保留所有权利.
       </footer>
     </div>
     <!-- ./wrapper -->
@@ -20,9 +20,9 @@
 </template>
 <script>
   // import '/static/libs/dialog/dialog.js'
-import '@/../static/common/bootstrap/js/bootstrap.min.js'
-import '@/../static/common/bootstrap/css/ionicons.min.css'
-import '@/../static/common/bootstrap/css/font-awesome.min.css'
+  import '@/../static/common/bootstrap/js/bootstrap.min.js'
+  import '@/../static/common/bootstrap/css/ionicons.min.css'
+  import '@/../static/common/bootstrap/css/font-awesome.min.css'
   import nav from './nav'
   import { mapGetters } from 'vuex'
 

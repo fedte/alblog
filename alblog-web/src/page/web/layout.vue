@@ -27,6 +27,8 @@
   <!-- ./wrapper -->
 </template>
 <script>
+  import { mapGetters } from 'vuex'
+
   export default {
     data() {
       return {
@@ -35,6 +37,26 @@
           {name: '博客', href: '/blog', target: false},
           {name: '小窝', href: 'https://www.fedte.cc', target: true}
         ]
+      }
+    },
+    computed: {
+      ...mapGetters({
+        ISLOGIN: 'isLogin',
+        INITSTATUS: 'initStatus',
+        TITLE: 'title',
+        SITETITLE: 'siteTitle',
+        SHAREINFO: 'share'
+      })
+    },
+    watch: {
+      TITLE() {
+        let that = this
+        let to = that.$route
+        if (to.meta && to.meta.title !== '' && to.meta.title !== undefined) {
+          document.title = to.meta.title
+        } else if (that.TITLE !== '') {
+          document.title = that.TITLE
+        }
       }
     }
   }

@@ -22,6 +22,7 @@ const UserModel = require(ROOT + '/app/models').User
 /**
 * @name get
 * @desc 获取文章信息
+* @author falost
 * @param {HttpRequest} req
 * @param {HttpResponse} res
 * @param {Function} next
@@ -38,20 +39,31 @@ exports.get = function(req, res, next) {
     return resJSON(res, true, 10007, '不是有效的ID')
   }
   ep.on('article_get', function () {
-    ArticleProxy.getArticle(articleId, function (err, article){
+    ArticleProxy.getArticle(articleId, 'get', function (err, article){
       if (err) {
         next(err)
       }
       if (!article || article.deleted) {
         return resJSON(res, true, 10008, 'ID不存在或已被删除')
       }
+      cache.set('article_' + articleId, article, tools.time.M(true))
 
-      ep.all('author_get', 'catetory_get', function (author, catetory){
+      if (mdrender) {
+        article.content = Helpers.markdown(tools.linkUsers(article.content))
+      }
+      return resJSON(res, true, 10000, '获取文章成功', {article})
+
+      /* ep.all('author_get', 'catetory_get', function (author, catetory){
         article = _.extend(author, catetory)
 
-        article = _.pick(article, ['id', 'author_id', 'catetory_id', 'catetory', 'content', 'title', 'tag', 'good', 'top', 'reply_count', 'visit_count', 'create_at', 'author'])
-
+        article.visit_count += 1
+        
+        article = _.pick(article, ['id', 'author_id', 'catetory_id', 'catetory', 'content', 'title', 'tag', 'good', 'top', 'reply_count', 'visit_count', 'digg_count', 'create_at', 'author'])
+        
+        article.save()
         cache.set('article_' + articleId, article, tools.time.M(true))
+        
+
         if (mdrender) {
           article.content = Helpers.markdown(tools.linkUsers(article.content))
         }
@@ -65,49 +77,57 @@ exports.get = function(req, res, next) {
         // 获取分类信息
         article.catetory = _.pick(catetory, ['name', 'alias'])
         ep.emit('catetory_get', article)
-      }))
-
+      })) */
     })
   })
   cache.get('article_' + articleId, function (err, article) {
+
     if (!article || article.deleted) {
       ep.emit('article_get')
     } else {
       if (mdrender) {
         article.content = Helpers.markdown(tools.linkUsers(article.content))
       }
-      return resJSON(res, true, 10000, '获取文章成功', {article})
+      ArticleProxy.getArticle(articleId, 'get', ep.done(function (article){
+        if(article) {
+          cache.set('article_' + articleId, article, tools.time.M(true))
+        }
+      }))
+      return resJSON(res, true, 10000, '获取文章成功', { article })
     }
   })
-
 }
 
 /**
 * @name list
 * @desc 获取文章列表
+* @author falost
 * @param {HttpRequest} req
 * @param {HttpResponse} res
 * @param {Function} next
 */
 exports.list = function (req, res, next) {
-  var page     = parseInt(req.body.page, 10) || 1
+  let page     = Number(req.body.page, 10) || 1
   page         = page > 0 ? page : 1
-  var catetory_id      = req.body.catetory || 'all'
-  var limit    = Number(req.body.limit) || 10
-  var mdrender = req.body.mdrender === 'true' ? true : false
+  let limit    = Number(req.body.limit) || 10
+  let catetory_id      = validator.trim(req.body.catetory || '')
+  let type     = validator.trim(req.body.type || '')
+  let tags     = validator.trim(req.body.tags || '')
+  tags         =  _.words(tags)
+  let mdrender = req.body.mdrender === 'true' ? true : false
 
-  var query = {}
-  if (catetory_id && catetory_id !== 'all') {
-    if (catetory_id === 'good') {
-      query.good = true
-    } else {
-      query.catetory_id = catetory_id
+  let query = {}
+  if (type === 'tag' && tags.length > 0) {
+    query = {
+      tag: {'$all': tags} 
     }
+  } else if (type === 'catetory' && catetory_id) {
+    query.catetory_id = catetory_id
   }
   query.deleted = false
-  var options = { skip: (page - 1) * limit, limit: limit, sort: '-create_at'}
+  let options = { skip: (page - 1) * limit, limit: limit, sort: '-create_at'}
 
-  var ep = new eventproxy()
+  let ep = new eventproxy()
   ep.fail(next)
 
   ArticleModel.find(query, '', options, ep.done('articles'))
@@ -119,7 +139,6 @@ exports.list = function (req, res, next) {
   ep.on('articles', function (articles) {
     articles.forEach(function (article) {
       UserProxy.getUserById(article.author_id, ep.done(function (author) {
-
         // 获取作者信息
         article.author = _.pick(author, ['loginname', 'avatar_url'])
         CatetoryProxy.getByCatetoryId(article.catetory_id, ep.done(function (catetory) {
@@ -128,10 +147,10 @@ exports.list = function (req, res, next) {
           ep.emit('all')
         }))
       }))
-    });
-    ep.after('all', articles.length, function (caaa) {
+    })
+    ep.after('all', articles.length, function () {
       articles = articles.map(function (article) {
-        article = _.pick(article, ['id', 'author_id', 'catetory_id', 'catetory', 'tag', 'content', 'title', 'good', 'top', 'reply_count', 'visit_count', 'create_at', 'author'])
+        article = _.pick(article, ['id', 'author_id', 'catetory_id', 'catetory', 'tag', 'content', 'title', 'good', 'top', 'reply_count', 'visit_count', 'digg_count', 'create_at', 'author'])
 
         cache.set('article_' + article.id, article, tools.time.M(true))
         // 是否解析文章内容
@@ -162,6 +181,102 @@ exports.list = function (req, res, next) {
         ep.emit('pages_get', pages);
       }))
     }
-   }));
-   // END 取分页数据
+  }));
+  // END 取分页数据
+}
+
+/**
+ * @name searchArticleListByTag
+ * @desc 根据标签进行搜索文章列表
+ * @param {HttpRequest} req 
+ * @param {HttpResponse} res 
+ * @param {Function} next 
+ */
+exports.searchArticleListByTag = function (req, res, next) {
+  let tags    = req.body.tags || ''
+  tags        = _.words(tags)
+  let page    = parseInt(req.body.page, 10) || 1
+  page        = page > 0 ? page : 1
+  let limit   = Number(req.body.limit) || 10
+  let mdrender= req.body.mdrender === 'true' ? true : false  
+  let query   = {}
+
+  if (tags.length > 0) {
+    query = {
+      tag: {'$all': tags} 
+    }
+  } else {
+    query = {}
+  }
+
+  query.deleted = false
+  let options = { skip: (page - 1) * limit, limit: limit, sort: '-create_at'}
+
+  let ep = new eventproxy()
+  ep.fail(next)
+
+  ep.all('articles_get', 'pages_get', function(articles, page) {
+    resJSON(res, true, 10000, '获取列表成功', {data: articles, page })
+  })
+
+  ep.on('articles', function (articles) {
+    articles.forEach(function (article) {
+      UserProxy.getUserById(article.author_id, ep.done(function (author) {
+        // 获取作者信息
+        article.author = _.pick(author, ['loginname', 'avatar_url'])
+        CatetoryProxy.getByCatetoryId(article.catetory_id, ep.done(function (catetory) {
+          // 获取分类信息
+          article.catetory = _.pick(catetory, ['name', 'alias'])
+          ep.emit('all')
+        }))
+      }))
+    })
+    ep.after('all', articles.length, function () {
+      articles = articles.map(function (article) {
+        article = _.pick(article, ['id', 'author_id', 'catetory_id', 'catetory', 'tag', 'content', 'title', 'good', 'top', 'reply_count', 'visit_count', 'digg_count', 'create_at', 'author'])
+
+        cache.set('article_' + article.id, article, tools.time.M(true))
+        // 是否解析文章内容
+        if (mdrender) {
+          article.content = Helpers.markdown(tools.linkUsers(article.content))
+        }
+        return article
+      })
+      ep.emit('articles_get', articles)
+    })
+  })
+  // 取分页数据
+  let pagesCacheKey = 'tags_pages';
+  let pages
+  ArticleProxy.getCountByQuery(query, ep.done(function (allArticleCount) {
+    let pageCount = Math.ceil(allArticleCount / limit)
+    pages = {
+      currentPage:page,
+      pageSize: limit,
+      pageCount: pageCount,
+      countTotal: allArticleCount
+    }
+    ep.emit('pages_get', pages);
+  }))
+  /* cache.get(pagesCacheKey, ep.done(function (pages) {
+    if (pages) {
+      ep.emit('pages_get', pages);
+    } else {
+      ArticleProxy.getCountByQuery(query, ep.done(function (allArticleCount) {
+        let pageCount = Math.ceil(allArticleCount / limit)
+        pages = {
+          currentPage:page,
+          pageSize: limit,
+          pageCount: pageCount,
+          countTotal: allArticleCount
+        }
+        cache.set(pagesCacheKey, pages, tools.time.m(true) * 10)
+        ep.emit('pages_get', pages);
+      }))
+    }
+  })); */
+  // END 取分页数据
+
+  ArticleModel.find(query, '', options, ep.done('articles'))
+
 }

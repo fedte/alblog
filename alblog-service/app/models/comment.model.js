@@ -10,7 +10,7 @@ const utility   = require('utility');
 const CommentSchema = new Schema({
   article_id: { type: ObjectId},
   content: { type: String },
-  author_nmae: { type: String },
+  author_name: { type: String },
   author_email: { type: String },
   author_website: { type: String },
   reply_id: { type: ObjectId },
@@ -23,7 +23,7 @@ const CommentSchema = new Schema({
 })
 
 CommentSchema.plugin(BaseModel)
-CommentSchema.index({topic_id: 1})
+CommentSchema.index({article_id: 1})
 CommentSchema.index({author_id: 1, create_at: -1})
 
 CommentSchema.virtual('avatar_url').get(function () {

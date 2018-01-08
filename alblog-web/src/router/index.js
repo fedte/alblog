@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '@/vuex/store'
 import HelloWorld from '@/components/HelloWorld'
 
 Vue.use(Router)
@@ -20,9 +21,9 @@ const WebArticleInfo = () => import('@/page/web/article/article')
 const WebArticleList = () => import('@/page/web/article/list')
 const WebIndex = () => import('@/page/web/index')
 const WebTagsList = () => import('@/page/web/tags/list')
-const WebTag = () => import('@/page/web/tags/tag')
+const WebCatetoryList = () => import('@/page/web/catetory/list')
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -55,7 +56,17 @@ export default new Router({
         {
           path: 'tags/:tag',
           name: 'tags',
-          component: WebTag
+          component: WebArticleList
+        },
+        {
+          path: 'catetory',
+          name: 'catetoryList',
+          component: WebCatetoryList
+        },
+        {
+          path: 'catetory/:id',
+          name: 'catetory',
+          component: WebArticleList
         }
       ]
     },
@@ -142,3 +153,22 @@ export default new Router({
     }
   ]
 })
+const title = document.title
+
+router.beforeEach((to, from, next) => {
+  store.dispatch('setSiteTitle', '')
+  store.dispatch('setShareInfo', '')
+  if (to.meta && to.meta.title !== '' && to.meta.title !== undefined) {
+    // console.log();
+    // console.log("title:",to.meta.title);
+
+    document.title = to.meta.title
+  } else {
+    document.title = title
+  }
+
+  store.dispatch('setSiteTitle', { title })
+
+  next()
+})
+export default router

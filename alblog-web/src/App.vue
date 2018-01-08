@@ -6,17 +6,39 @@
 
 <script>
 import store from '@/vuex/store'
+import { mapGetters } from 'vuex'
 export default {
   name: 'app',
   store,
   created() {
     let that = this
     that.$STORE.set('author', 'falost@fedte')
+  },
+  computed: {
+    ...mapGetters({
+      ISLOGIN: 'isLogin',
+      INITSTATUS: 'initStatus',
+      TITLE: 'title',
+      SITETITLE: 'siteTitle',
+      SHAREINFO: 'share'
+    })
+  },
+  watch: {
+    TITLE() {
+      let that = this
+      let to = that.$route
+      if (to.meta && to.meta.title !== '' && to.meta.title !== undefined) {
+        document.title = to.meta.title
+      } else if (that.TITLE !== '') {
+        document.title = that.TITLE
+      }
+    }
   }
 }
 </script>
 
-<style>
+<style lang="scss">
+  @import "src/scss/common.scss";
   #app {
     min-height: 100%;
   }
@@ -95,7 +117,7 @@ export default {
   .flex-cetenr-x {justify-content:space-around}
 
   .line-b {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid $lineColor;
   }
   .ml10 {
     margin-left: 10px;

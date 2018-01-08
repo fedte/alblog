@@ -18,6 +18,7 @@ const CatetoryProxy= require(ROOT + '/app/proxy').Catetory
 /**
  * @name delItem
  * @desc 删除单个项目
+ * @author falost
  * @param {HttpRequest} req
  * @param {HttpResponse} res
  * @param {Function} next
@@ -43,6 +44,8 @@ exports.delItem = function(req, res, next) {
     Type = ArticleModel
   } else if (deleteType === 'CATETORY') {
     Type = CatetoryModel
+  } else {
+    return resJSON(res, true, 10009, '不是有效的类型')
   }
   ep.on('delete_ok', function (Item){
     if (deleteType !== 'CATETORY' && deleteType !== 'COMMENT') {

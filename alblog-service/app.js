@@ -21,7 +21,7 @@ app.use(require('connect-multiparty')())
 // cookie处理 by falost
 app.use(cookieParser())
 // session处理
-app.use(session.check(),session.init())
+// app.use(session.check(),session.init())
 
 // router by falost
 app.use('/admin/api/v1', cors(), apiAdminRouter)

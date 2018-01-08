@@ -23,6 +23,7 @@ const CatetoryModel    = require(ROOT + '/app/models').Catetory
 /**
 * @name get
 * @desc 获取文章信息
+* @author falost
 * @param {HttpRequest} req
 * @param {HttpResponse} res
 * @param {Function} next
@@ -65,6 +66,7 @@ exports.get = function(req, res, next) {
 /**
 * @name list
 * @desc 获取文章列表
+* @author falost
 * @param {HttpRequest} req
 * @param {HttpResponse} res
 * @param {Function} next
@@ -118,7 +120,7 @@ exports.list = function (req, res, next) {
     });
     ep.after('all', articles.length, function (caaa) {
       articles = articles.map(function (article) {
-        article = _.pick(article, ['id', 'author_id', 'catetory_id', 'catetory', 'tag', 'content', 'title', 'good', 'top', 'reply_count', 'visit_count', 'create_at', 'author'])
+        article = _.pick(article, ['id', 'author_id', 'catetory_id', 'catetory', 'tag', 'content', 'title', 'good', 'top', 'reply_count', 'visit_count', 'digg_count', 'create_at', 'author'])
 
         cache.set('article_' + article.id, article, tools.time.M(true))
         return article
@@ -150,6 +152,7 @@ exports.list = function (req, res, next) {
 /**
  * @name create
  * @desc 创建文章
+ * @author falost
  * @param {HttpRequest} req
  * @param {HttpResponse} res
  * @param {Function} next
@@ -180,8 +183,9 @@ exports.create = function (req, res, next) {
   }
   if (tag !== '') {
     tag = _.words(tag)
+  } else {
+    tag = []
   }
-
   let ep = new eventproxy()
   ep.fail(next)
 
@@ -199,7 +203,7 @@ exports.create = function (req, res, next) {
       if (err) {
         return next(err)
       }
-      article = _.pick(article, ['id', 'author_id', 'catetory_id', 'catetory', 'content', 'title', 'tag', 'good', 'top', 'reply_count', 'visit_count', 'create_at', 'author'])
+      article = _.pick(article, ['id', 'author_id', 'catetory_id', 'catetory', 'content', 'title', 'tag', 'good', 'top', 'reply_count', 'visit_count', 'digg_count', 'create_at', 'author'])
       // 更新分类信息
       CatetoryProxy.getByCatetoryId(catetory, ep.done(function (catetory) {
         if (catetory) {
@@ -238,6 +242,7 @@ exports.create = function (req, res, next) {
 /**
  * @name update
  * @desc 文章更新
+ * @author falost
  * @param {HttpRequest} req
  * @param {HttpResponse} res
  * @param {Function} next
@@ -274,9 +279,13 @@ exports.update = function (req, res, next) {
   if (message) {
     return resJSON(res, true, 10200, message)
   }
+  
   if (tag !== '') {
     tag = _.words(tag)
+  } else {
+    tag = []
   }
+  
   let ep = new eventproxy()
   ep.fail(next)
 
@@ -288,7 +297,7 @@ exports.update = function (req, res, next) {
     return resJSON(res, true, 10000, '更新成功', {article})
   })
   ep.on('article_save', function () {
-    ArticleProxy.getArticle(articleId, function(err, article){
+    ArticleModel.findById(articleId, function(err, article){
       if (err) {
         next(err)
       }

@@ -32,6 +32,35 @@ Vue.directive('highlight', function (el) {
     hljs.highlightBlock(block)
   })
 })
+Vue.directive('onlaod', {
+  inserted: function (el, {value}) {
+    window.onscroll = function () {
+      let scrollHeight
+      let clientHeight
+      let scrollTop
+      if (document.documentElement) {
+        scrollTop = document.documentElement.scrollTop
+        clientHeight = document.documentElement.clientHeight
+        scrollHeight = document.documentElement.scrollHeight
+      } else if (document.body) {
+        scrollTop = document.body.scrollTop
+        clientHeight = document.body.clientHeight
+        scrollHeight = document.body.scrollHeight
+      }
+      // console.log('----------------')
+      // console.log(scrollTop, clientHeight, scrollHeight, scrollTop + clientHeight == scrollHeight)
+      // console.log('------ End------')
+      if (scrollTop + clientHeight >= scrollHeight - 50) {
+        if (typeof value === 'function') {
+          value()
+        }
+      }
+    }
+  },
+  unbind (el) {
+    window.onscroll = null
+  }
+})
 
 // 组件
 Vue.component(Input.name, Input)
@@ -115,6 +144,7 @@ Vue.prototype.$ISLOGIN = function (callback) {
     callback(callbackData)
   }
 }
+
 /* eslint-disable no-new */
 
 const app = new Vue({

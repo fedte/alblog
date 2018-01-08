@@ -31,11 +31,12 @@
                         <th>作者</th>
                         <th>发布时间</th>
                         <th>阅读量</th>
+                        <th>评论数</th>
                         <th>操作</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr :class="'item-id-' + item.id" v-for="(item,index) in dataList">
+                      <tr :class="'item-id-' + item.id" v-for="(item,index) in dataList" :key="index">
                         <!-- <td><a href="{poster}" onclick="return showImage(this.href)" class="thumbnail"><img src="{poster}" alt=""/></a></td> -->
                         <td>{{ index + 1 }}</td>
                         <td>{{ item.title }}</td>
@@ -43,6 +44,7 @@
                         <td>{{ item.author.loginname }}</td>
                         <td>{{ formatDate(item.create_at) }}</td>
                         <td>{{ item.visit_count }}</td>
+                        <td>{{ item.reply_count }}</td>
                         <td>
                           <router-link class="el-button el-button--default el-button--mini" target = "_blank" :to="'/article/' + item.id">查看</router-link>
                           <router-link tag="button" class="el-button el-button--default el-button--mini" :to="'/admin/article/new/' + item.id">编辑</router-link>

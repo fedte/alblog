@@ -6,7 +6,7 @@ import qs from 'qs'
 
 import md5 from '../utils/md5'
 
-const URI = 'http://127.0.0.1:3000/'
+const URI = 'http://192.168.1.19:3000/'
 const admin = 'admin/api/v1'
 const web = 'api/v1'
 
@@ -21,7 +21,7 @@ const vRequest = function (params, url, type = '') {
   params.data['sign'] = sign
   params.data['timestamp'] = timestamp
 
-  const HOST = URI + (type == 'admin' ? admin : web)
+  const HOST = URI + (type === 'admin' ? admin : web)
   console.log('--------------')
   console.log(HOST, params.method)
   console.log('--------------')
@@ -113,3 +113,9 @@ export const adminDeleteItem = (params) => vRequest(params, '/delete/item', 'adm
 export const getArticleList = (params) => vRequest(params, '/article/list')
 
 export const getArticleInfo = (params) => vRequest(params, '/article/get')
+
+export const saveComment = (params) => vRequest(params, '/comment/save')
+
+export const getCommentsList = (params) => vRequest(params, '/comment/list')
+
+export const updateDigg = (params) => vRequest(params, '/update/digg')
