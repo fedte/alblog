@@ -6,6 +6,7 @@ A Light Blog
 ## 实现技术
 
 后端 API 基于 nodejs + mongodb + redis
+
 前端页面基于 vue + vue-router + vuex + axios 
 
 ## 运行环境
