@@ -34,9 +34,7 @@ const vRequest = function (params, url, type = '') {
       baseURL: HOST + url,
       data: qs.stringify(params.data),
       withCredentials: false,
-      headers: {
-        // 'Access-Control-Allow-Origin': '*'
-      }
+      headers: {}
     }
   } else if (params.method === 'UPLOAD') {
     config = {
@@ -62,9 +60,7 @@ const vRequest = function (params, url, type = '') {
       method: params.method || 'GET',
       baseURL: HOST + url,
       withCredentials: false,
-      headers: {
-        'Access-Control-Allow-Origin': '*'
-      }
+      headers: {}
     }
   }
 
