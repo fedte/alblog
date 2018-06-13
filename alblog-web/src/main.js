@@ -21,7 +21,7 @@ import hljs from 'highlight.js'
 import 'highlight.js/styles/atom-one-dark.css' // 样式文件
 
 Vue.config.productionTip = true
-
+// Vue.config.productionTip = false
 Vue.config.devtools = true
 // Vue.config.devtools = false
 

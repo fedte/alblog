@@ -6,7 +6,8 @@ import qs from 'qs'
 
 import md5 from '../utils/md5'
 
-const URI = 'http://192.168.1.19:3000/'
+// const URI = 'http://192.168.1.19:3000/'
+const URI = 'https://api.falost.cc/'
 const admin = 'admin/api/v1'
 const web = 'api/v1'
 
@@ -34,7 +35,7 @@ const vRequest = function (params, url, type = '') {
       data: qs.stringify(params.data),
       withCredentials: false,
       headers: {
-        'Access-Control-Allow-Origin': '*'
+        // 'Access-Control-Allow-Origin': '*'
       }
     }
   } else if (params.method === 'UPLOAD') {
@@ -44,8 +45,7 @@ const vRequest = function (params, url, type = '') {
       data: params.data,
       withCredentials: false,
       headers: {
-        'Content-Type': 'multipart/form-data',
-        'Access-Control-Allow-Origin': '*'
+        'Content-Type': 'multipart/form-data'
       }
     }
   } else if (params.method === 'DELETE') {
@@ -54,9 +54,7 @@ const vRequest = function (params, url, type = '') {
       baseURL: HOST + url,
       data: params.data,
       withCredentials: false,
-      headers: {
-        'Access-Control-Allow-Origin': '*'
-      }
+      headers: {}
     }
   } else {
     config = {

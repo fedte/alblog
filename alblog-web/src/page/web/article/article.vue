@@ -2,12 +2,12 @@
   <section>
     <!-- 正文内容 -->
     <section class="content-detail bgc-fff">
-      <template v-if="article">
+      <template v-if="article !== null">
         <header>
           <div class="title fs20 fwb" :title="article.title">{{article.title}}</div>
           <div class="author-info flex" v-if="article.author">
             <img v-if="article.author.avatar_url" :src=" article.author.avatar_url" class="author-cover hidden-xs mr10" :alt="article.author.loginname" :title="article.author.loginname">
-            <img v-else src="~assets/images/tuxiang.jpg" alt="" :title="article.author.loginname">
+            <img v-else src="~assets/images/tuxiang.jpg" alt="" class="author-cover hidden-xs mr10" :title="article.author.loginname">
             <div>
               <span class="time fs14" title="创作时间">{{formatDate(article.create_at)}}</span>
               <router-link to="/" class="name fs18" title="作者">{{article.author.loginname}}</router-link>
@@ -382,6 +382,9 @@
             let data = res.data
             if (data.code === 10000) {
               that.$data.article = data.entity.article
+              that.$nextTick().then(function() {
+                scrollTo(0, 0)
+              })
             } else {
               that.$message({
                 message: data.message,
@@ -557,44 +560,23 @@
         this.$data.loadMore = true
       }
     },
-    created() {
+    async created() {
       let that = this
       let data = that.$route.params
       if (data.id) {
         that.$data.id = data.id
-        that.getArticleInfo()
-        that.getComments()
+        await that.getComments()
+        await that.getArticleInfo()
       }
       that.$data.userInfo = that.$STORE.get('userInfo') || {}
     },
-    mounted () {
+    async mounted () {
       let that = this
       // that.goComment()
       that.$data.diggList = that.$STORE.get('digg') || []
       setTimeout(() => {
         that.$data.showLoading = false
       }, 100)
-
-      // window.onscroll = function() {
-      //   let scrollHeight
-      //   let clientHeight
-      //   let scrollTop
-      //   if (document.documentElement) {
-      //     scrollTop = document.documentElement.scrollTop
-      //     clientHeight = document.documentElement.clientHeight
-      //     scrollHeight = document.documentElement.scrollHeight
-      //   } else if (document.body) {
-      //     scrollTop = document.body.scrollTop
-      //     clientHeight = document.body.clientHeight
-      //     scrollHeight = document.body.scrollHeight
-      //   }
-      //   // console.log('----------------')
-      //   // console.log(scrollTop, clientHeight, scrollHeight, scrollTop + clientHeight == scrollHeight)
-      //   // console.log('------ End------')
-      //   if (scrollTop + clientHeight >= scrollHeight - 50) {
-      //     that.$data.loadMore = true
-      //   }
-      // }
     }
   }
 </script>

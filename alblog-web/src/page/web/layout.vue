@@ -5,18 +5,20 @@
         <!--nav-->
         <span class="line"></span>
         <nav>
-            <ul class="box">
-              <li v-for="(item,index) in navList">
-                <a v-if="item.target" target="_blank" :href="item.href">{{item.name}}</a>
-                <router-link :to="item.href" v-else>{{item.name}}</router-link>
-              </li>
-            </ul>
+          <ul class="box">
+            <li v-for="(item,index) in navList" :key="index">
+              <a v-if="item.target" target="_blank" :href="item.href">{{item.name}}</a>
+              <router-link :to="item.href" v-else>{{item.name}}</router-link>
+            </li>
+          </ul>
         </nav>
         <!--nav End-->
       </header>
     <!-- Content Wrapper. Contains page content -->
     <section class="content-wrapper">
-      <router-view></router-view>
+      <transition name="fade" mode="out-in">
+        <router-view></router-view>
+      </transition>
     </section>
     <!-- <div class='control-sidebar-bg'></div> -->
     <!-- /.content-wrapper -->

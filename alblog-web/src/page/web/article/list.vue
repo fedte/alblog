@@ -1,48 +1,54 @@
 <template>
   <div class="article-content">
     <div class="article-list">
-      <div class="article-item  bgc-fff flex" v-for="(item, index) in articles" :key="index">
-        <div class="content-img" v-if="item.thumb">
-          <router-link :to="'/article/' + item.id">
-            <img src="~assets/images/bg/bg1.jpg" alt="" :title="item.name">
-          </router-link>
-        </div>
-        <div class="content-text">
-          <div class="article-header">
-            <router-link :to="'/catetory/' + item.catetory_id" class="catetory-name c-333" title="分类">[{{item.catetory.alias}}]</router-link>
-            <router-link :to="'/article/' + item.id" class="article-title c-333" :title="item.title">{{item.title}}</router-link>
+      <template v-if="articles">
+        <div class="article-item  bgc-fff flex" v-for="(item, index) in articles" :key="index">
+          <div class="content-img" v-if="item.thumb">
+            <router-link :to="'/article/' + item.id">
+              <img src="~assets/images/bg/bg1.jpg" alt="" :title="item.name">
+            </router-link>
           </div>
-          <div class="article-tags flex" v-if="item.tag.length > 0">
-            <span class="fui-font fui-tag c-666 mr10" title="标签"></span>
-            <router-link :to="'/tags/' + item" class='tag mr10' v-for="(item, index) in item.tag" :key="index" v-if="index < 5" :style="'background-color:' + bgColor()" :title="item">{{item}}</router-link>
-          </div>
-          <div class="article-desc">
-            <router-link :to="'/article/' + item.id" class="c-666" title="简介">{{item.content | spliceDesc}}</router-link>
-          </div>
-          <div class="article-footer flex">
-            <div class="footer-left fx1">
-              <div class="mr10 create-time c-999" title="发表时间">
-                <span class="fui-font fui-time"></span>
-                <span>{{formatDate(item.create_at)}}</span>
+          <div class="content-text">
+            <div class="article-header">
+              <router-link :to="'/catetory/' + item.catetory_id" class="catetory-name c-333" title="分类">[{{item.catetory.alias}}]</router-link>
+              <router-link :to="'/article/' + item.id" class="article-title c-333" :title="item.title">{{item.title}}</router-link>
+            </div>
+            <div class="article-tags flex" v-if="item.tag.length > 0">
+              <span class="fui-font fui-tag c-666 mr10" title="标签"></span>
+              <router-link :to="'/tags/' + item" class='tag mr10' v-for="(item, index) in item.tag" :key="index" v-if="index < 5" :style="'background-color:' + bgColor()" :title="item">{{item}}</router-link>
+            </div>
+            <div class="article-desc">
+              <router-link :to="'/article/' + item.id" class="c-666" title="简介">{{item.content | spliceDesc}}</router-link>
+            </div>
+            <div class="article-footer flex">
+              <div class="footer-left fx1">
+                <div class="mr10 create-time c-999" title="发表时间">
+                  <span class="fui-font fui-time"></span>
+                  <span>{{formatDate(item.create_at)}}</span>
+                </div>
+              </div>
+              <div class="footer-rigt flex-right tar fx1">
+                <div class="mr10 visit-count c-999" title="点击数">
+                  <span class="fui-font fui-visit"></span>
+                  <span>{{item.visit_count || 0}}</span>
+                </div>
+                <div class="mr10 digg-count c-999" :class="isDigg(item.id)" title="点赞数" @click="digg" :data-id="item.id" :data-index="index">
+                  <span class="fui-font fui-digg"></span>
+                  <span>{{item.digg_count || 0}}</span>
+                </div>
+                <div class="mr10 comment-count c-999" title="评论数">
+                  <span class="fui-font fui-comment"></span>
+                  <span>{{item.reply_count || 0}}</span>
+                </div>
               </div>
             </div>
-            <div class="footer-rigt flex-right tar fx1">
-              <div class="mr10 visit-count c-999" title="点击数">
-                <span class="fui-font fui-visit"></span>
-                <span>{{item.visit_count || 0}}</span>
-              </div>
-              <div class="mr10 digg-count c-999" :class="isDigg(item.id)" title="点赞数" @click="digg" :data-id="item.id" :data-index="index">
-                <span class="fui-font fui-digg"></span>
-                <span>{{item.digg_count || 0}}</span>
-              </div>
-              <div class="mr10 comment-count c-999" title="评论数">
-                <span class="fui-font fui-comment"></span>
-                <span>{{item.reply_count || 0}}</span>
-              </div>
-            </div>
           </div>
         </div>
-      </div>
+      </template>
+      <content-placeholders v-else>
+        <content-placeholders-heading :img="true" />
+        <content-placeholders-text :lines="3" />
+      </content-placeholders>
     </div>
   </div>
 </template>
@@ -50,7 +56,7 @@
   export default {
     data() {
       return {
-        articles: [],
+        articles: null,
         page: {},
         diggList: [],
         loadMore: false
@@ -58,7 +64,7 @@
     },
     filters: {
       spliceDesc(val) {
-        return val.replace(/```javascript/g, '```').replace(/```/g, '').slice(0, 260)
+        return val.replace(/```javascript/g, '```').replace(/```/g, '').slice(0, 220)
       }
     },
     watch: {
@@ -233,7 +239,7 @@
         position: relative;
         font-size: 16px;
         overflow: hidden;
-        margin: 5px 0 10px 0;
+        margin: 5px 0 20px 0;
       }
       .article-footer {
         position: absolute;

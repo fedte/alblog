@@ -146,18 +146,26 @@ const router = new Router({
       path: '*',
       name: 'NotFound',
       component: HelloWorld,
-      // redirect: '/index',
+      redirect: '/',
       meta: {
         title: 'NotFound'
       }
     }
-  ]
+  ],
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  }
 })
 const title = document.title
 
 router.beforeEach((to, from, next) => {
   store.dispatch('setSiteTitle', '')
   store.dispatch('setShareInfo', '')
+
   if (to.meta && to.meta.title !== '' && to.meta.title !== undefined) {
     // console.log();
     // console.log("title:",to.meta.title);
