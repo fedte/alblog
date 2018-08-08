@@ -22,9 +22,12 @@ const WebArticleList = () => import('@/page/web/article/list')
 const WebIndex = () => import('@/page/web/index')
 const WebTagsList = () => import('@/page/web/tags/list')
 const WebCatetoryList = () => import('@/page/web/catetory/list')
-
+const scrollBehavior = (to, from, savedPosition) => {
+  return { x: 0, y: 0 }
+}
 const router = new Router({
   mode: 'history',
+  scrollBehavior,
   routes: [
     {
       path: '/',
@@ -151,14 +154,7 @@ const router = new Router({
         title: 'NotFound'
       }
     }
-  ],
-  scrollBehavior (to, from, savedPosition) {
-    if (savedPosition) {
-      return savedPosition
-    } else {
-      return { x: 0, y: 0 }
-    }
-  }
+  ]
 })
 const title = document.title
 

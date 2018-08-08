@@ -113,7 +113,7 @@ exports.list = function (req, res, next) {
   let catetory_id      = validator.trim(req.body.catetory || '')
   let type     = validator.trim(req.body.type || '')
   let tags     = validator.trim(req.body.tags || '')
-  tags         =  _.words(tags)
+  tags         =  _.words(tags, /[^,]+/g)
   let mdrender = req.body.mdrender === 'true' ? true : false
 
   let query = {}
@@ -194,7 +194,7 @@ exports.list = function (req, res, next) {
  */
 exports.searchArticleListByTag = function (req, res, next) {
   let tags    = req.body.tags || ''
-  tags        = _.words(tags)
+  tags        = _.words(tags, /[^,]+/g)
   let page    = parseInt(req.body.page, 10) || 1
   page        = page > 0 ? page : 1
   let limit   = Number(req.body.limit) || 10

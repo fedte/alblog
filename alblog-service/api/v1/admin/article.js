@@ -158,11 +158,11 @@ exports.list = function (req, res, next) {
  * @param {Function} next
  */
 exports.create = function (req, res, next) {
+  let catetory= validator.trim(req.body.catetory || '')
+  let userId  = validator.trim(req.body.userId)
   let title   = validator.trim(req.body.title || '')
   let tag     = validator.trim(req.body.tag || '')
   let content = validator.trim(req.body.content || '')
-  let catetory= validator.trim(req.body.catetory || '')
-  let userId  = validator.trim(req.body.userId)
   // 验证
   let message
   if (title === '') {
@@ -181,8 +181,9 @@ exports.create = function (req, res, next) {
   if (message) {
     return resJSON(res, true, 10200, message)
   }
+
   if (tag !== '') {
-    tag = _.words(tag)
+    tag = _.words(tag, /[^,]+/g)
   } else {
     tag = []
   }
@@ -281,7 +282,7 @@ exports.update = function (req, res, next) {
   }
   
   if (tag !== '') {
-    tag = _.words(tag)
+    tag = _.words(tag, /[^,]+/g)
   } else {
     tag = []
   }

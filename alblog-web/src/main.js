@@ -20,10 +20,10 @@ import VueContentPlaceholders from 'vue-content-placeholders'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/atom-one-dark.css' // 样式文件
 
-Vue.config.productionTip = true
-// Vue.config.productionTip = false
-Vue.config.devtools = true
-// Vue.config.devtools = false
+// Vue.config.productionTip = true
+Vue.config.productionTip = false
+// Vue.config.devtools = true
+Vue.config.devtools = false
 
 // 指令
 Vue.directive('highlight', function (el) {
