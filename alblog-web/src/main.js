@@ -20,10 +20,11 @@ import VueContentPlaceholders from 'vue-content-placeholders'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/atom-one-dark.css' // 样式文件
 
-// Vue.config.productionTip = true
-Vue.config.productionTip = false
-// Vue.config.devtools = true
-Vue.config.devtools = false
+const DEV = true
+// const DEV = false
+
+Vue.config.productionTip = DEV
+Vue.config.devtools = DEV
 
 // 指令
 Vue.directive('highlight', function (el) {
@@ -32,7 +33,8 @@ Vue.directive('highlight', function (el) {
     hljs.highlightBlock(block)
   })
 })
-Vue.directive('onlaod', {
+
+/* Vue.directive('onlaod', {
   inserted: function (el, {value}) {
     window.onscroll = function () {
       let scrollHeight
@@ -61,7 +63,7 @@ Vue.directive('onlaod', {
     window.onscroll = null
   }
 })
-
+ */
 // 组件
 Vue.component(Input.name, Input)
 Vue.component(Button.name, Button)

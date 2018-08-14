@@ -122,7 +122,7 @@
               } else {
                 that.$data.articles = result.entity.data
               }
-
+              that.$store.dispatch('setSiteTitle', (result.entity.info.name ? result.entity.info.name : '博文') + ' - Flost 的小窝')
               if (that.$data.currentPage >= that.$data.page.pageCount) {
                 that.$data.loadAll = true
               } else {

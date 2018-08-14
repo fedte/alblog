@@ -115,12 +115,13 @@ exports.list = function (req, res, next) {
   let tags     = validator.trim(req.body.tags || '')
   tags         =  _.words(tags, /[^,]+/g)
   let mdrender = req.body.mdrender === 'true' ? true : false
-
   let query = {}
+  let typeName
   if (type === 'tag' && tags.length > 0) {
     query = {
       tag: {'$all': tags} 
     }
+    typeName = tags
   } else if (type === 'catetory' && catetory_id) {
     query.catetory_id = catetory_id
   }
@@ -133,7 +134,10 @@ exports.list = function (req, res, next) {
   ArticleModel.find(query, '', options, ep.done('articles'))
 
   ep.all('articles_get', 'pages_get', function(articles, page) {
-    resJSON(res, true, 10000, '获取列表成功', {data: articles, page })
+    resJSON(res, true, 10000, '获取列表成功', {data: articles, page, info: {
+      name: typeName,
+      type: type
+    }})
   })
 
   ep.on('articles', function (articles) {
@@ -144,6 +148,9 @@ exports.list = function (req, res, next) {
         CatetoryProxy.getByCatetoryId(article.catetory_id, ep.done(function (catetory) {
           // 获取分类信息
           article.catetory = _.pick(catetory, ['name', 'alias'])
+          if (type === 'catetory') {
+            typeName = catetory.alias
+          }
           ep.emit('all')
         }))
       }))
@@ -151,7 +158,6 @@ exports.list = function (req, res, next) {
     ep.after('all', articles.length, function () {
       articles = articles.map(function (article) {
         article = _.pick(article, ['id', 'author_id', 'catetory_id', 'catetory', 'tag', 'content', 'title', 'good', 'top', 'reply_count', 'visit_count', 'digg_count', 'create_at', 'author'])
-
         cache.set('article_' + article.id, article, tools.time.M(true))
         // 是否解析文章内容
         if (mdrender) {

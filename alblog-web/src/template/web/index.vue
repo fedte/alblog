@@ -19,7 +19,7 @@
           <h2>I'M Falost</h2>
           <p>专注于前端开发，前端安全研究！</p>
           <div class="tag">
-            <span v-for="item in tag" :style="'background-color:' + tagBgColor()">{{item.name}}</span>
+            <span v-for="(item, index) in tag" :key="index" :style="'background-color:' + tagBgColor()">{{item.name}}</span>
           </div>
         </section>
       </div>
@@ -60,7 +60,7 @@
             </div>
             <div class="right">
               <ul class="skill_list" >
-                <li v-for="(item,index) in skills" :key="item"><span :style="'background-color:' + tagBgColor()  + (showSpot ? ';width:' + item.spot * 2 +'px' : '')">{{showSpot ? item.name : ''}}</span ><span v-show="showSpot">{{item.spot}}点</span></li>
+                <li v-for="(item, index) in skills" :key="index"><span :style="'background-color:' + tagBgColor()  + (showSpot ? ';width:' + item.spot * 2 +'px' : '')">{{showSpot ? item.name : ''}}</span ><span v-show="showSpot">{{item.spot}}点</span></li>
               </ul>
             </div>
           </div>
@@ -310,6 +310,7 @@
       }
     },
     mounted () {
+      this.$store.dispatch('setSiteTitle', 'Falost 的小窝 - 非著名前端技术博客，记录生活中的点滴！')
       this.bubble()
       this.indexInit()
     }
@@ -417,7 +418,7 @@ section{
         }
         h2{
           font-size: 25pt;
-          font-family:Handlee,"华文行楷","Microsoft Yahei",arial,sans-serif;
+          font-family:Handlee,"huawenxingkai","Microsoft Yahei",arial,sans-serif;
         }
         p{
           line-height: 15pt;

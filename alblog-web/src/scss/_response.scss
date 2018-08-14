@@ -123,8 +123,8 @@
     }
   }
   /* 弹框 */
-  /deep/ .model-box,
-  /deep/ .replybox {
+  div /deep/ .model-box,
+  div /deep/ .replybox {
     width: 90%;
     .el-dialog__body {
       padding: 10px 10px;

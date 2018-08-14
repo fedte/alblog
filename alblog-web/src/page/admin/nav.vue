@@ -276,7 +276,7 @@
             <img src="/static/AdminLTE/default/img/user2-160x160.jpg" class="img-circle" alt="User Image" />
           </div>
           <div class="pull-left info">
-            <p>admin</p>
+            <p>falost</p>
             <router-link to="#"><i class="fa fa-circle text-success"></i> 在线</router-link>
           </div>
           <div class="logout" @click="loginOut">
@@ -298,8 +298,8 @@
         <ul class="sidebar-menu">
           <li class="header">主导航</li>
           <li class="active treeview">
-            <router-link exact active-class="active" :to="adminpath + '/index'" exact>
-              <i class="fa fa-dashboard"></i> <span>控制面板</span> <span class="label label-primary pull-right"></span></i>
+            <router-link exact active-class="active" :to="adminpath + '/index'">
+              <i class="fa fa-dashboard"></i> <span>控制面板</span> <span class="label label-primary pull-right"></span>
             </router-link>
           </li>
           <!-- 全局设置 -->

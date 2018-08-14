@@ -20,6 +20,8 @@ const CommentSchema = new Schema({
   digg_count: { type: Number, default: 0 },
   ups: [ Schema.Types.ObjectId ],
   deleted: {type: Boolean, default: false},
+}, {
+  usePushEach: true
 })
 
 CommentSchema.plugin(BaseModel)

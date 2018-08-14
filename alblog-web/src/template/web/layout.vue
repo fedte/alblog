@@ -1,44 +1,27 @@
 <template>
   <div class="wrapper">
     <!--heaer-->
-      <header id="header">
-        <!--nav-->
-        <span class="line"></span>
-        <nav>
-          <ul class="box">
-            <li v-for="(item,index) in navList" :key="index">
-              <a v-if="item.target" target="_blank" :href="item.href">{{item.name}}</a>
-              <router-link :to="item.href" v-else>{{item.name}}</router-link>
-            </li>
-          </ul>
-        </nav>
-        <!--nav End-->
-      </header>
+    <fui-header></fui-header>
     <!-- Content Wrapper. Contains page content -->
-    <section class="content-wrapper">
+    <section class="content-wrapper" :style="style">
       <transition name="fade" mode="out-in">
         <router-view></router-view>
       </transition>
     </section>
     <!-- <div class='control-sidebar-bg'></div> -->
     <!-- /.content-wrapper -->
-    <!-- <footer class="main-footer" id="footer">
-
-    </footer> -->
+  <fui-footer></fui-footer>
   </div>
   <!-- ./wrapper -->
 </template>
 <script>
   import { mapGetters } from 'vuex'
-
+  import fuiFooter from './common/footer'
+  import fuiHeader from './common/header'
   export default {
     data() {
       return {
-        navList: [
-          {name: 'Falost Home', href: '/', target: false},
-          {name: '博客', href: '/blog', target: false},
-          {name: '小窝', href: 'https://www.fedte.cc', target: true}
-        ]
+        height: ''
       }
     },
     computed: {
@@ -48,7 +31,17 @@
         TITLE: 'title',
         SITETITLE: 'siteTitle',
         SHAREINFO: 'share'
-      })
+      }),
+      style() {
+        let style = {
+          'min-height': this.height - 125 + 'px'
+        }
+        return style
+      }
+    },
+    components: {
+      fuiHeader,
+      fuiFooter
     },
     watch: {
       TITLE() {
@@ -59,6 +52,14 @@
         } else if (that.TITLE !== '') {
           document.title = that.TITLE
         }
+      }
+    },
+    methods: {},
+    mounted () {
+      let that = this
+      that.$data.height = window.innerHeight
+      window.onresize = function () {
+        that.$data.height = window.innerHeight
       }
     }
   }
@@ -73,37 +74,6 @@
 }
 body,html{
   background-color: #f7f7f7
-}
-#header{
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 999;
-  span.line{
-    display: block;
-    width: 100%;
-    height: 2px;
-    background: $ztColor ;
-  }
-  nav{
-    width: 100%;
-    height: 40pt;
-    background-color: $hdBgColor;
-    border-bottom:1pt solid #cccccc ;
-    box-shadow: 0 1px 17px 0 #cccccc;
-      ul{
-        li{
-          float: left;
-          padding: 5pt 10pt;
-          line-height: 30pt;
-          font-size: 18pt;
-          font-family: Handlee,"华文行楷","Microsoft Yahei",arial,sans-serif;
-
-        }
-
-    }
-  }
 }
 a:focus, a:hover {
   color: $hover;
@@ -136,13 +106,6 @@ a{
 @media (max-width: 768px) {
   .box{
     width: 100%;
-  }
-}
-#footer{
-  position: relative;
-  background-color: rgba(255, 255, 255, 0.6);
-  .main{
-    height: 100px;
   }
 }
 </style>

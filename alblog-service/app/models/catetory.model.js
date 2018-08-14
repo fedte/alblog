@@ -10,11 +10,13 @@ const CatetorySchema = new Schema({
   name: { type: String },
   type: { type: String },
   alias:{ type: String },
-  content_count: [{ type: ObjectId, ref: 'Article' }],
+  content_count: [{ type: ObjectId }],
   create_at: { type: Date, default: Date.now },
   update_at: { type: Date, default: Date.now },
   deleted: { type: Boolean, default: false },
   isDefault: { type: Boolean, default: false }
+}, {
+  usePushEach: true
 })
 
 CatetorySchema.plugin(BaseModel);

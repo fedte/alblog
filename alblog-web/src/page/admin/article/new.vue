@@ -147,14 +147,16 @@
       }
     },
     methods: {
+      // 改变分类
       changeCatetory(e) {
         let that = this
         that.$data.showCatetoryList = !that.$data.showCatetoryList
       },
+      // 选择分类
       selected(e) {
         let that = this
         let data = e.currentTarget.dataset
-        that.$data.article.catetory = that.$data.catetoryList[data.index].id
+        that.$data.article.catetory_id = that.$data.catetoryList[data.index].id
 
         that.$data.catetoryName = that.$data.catetoryList[data.index].alias
 
@@ -275,7 +277,7 @@
                 let child = catetoryList[index]
                 if (child.id == articleCatetory) {
                   catetoryList[index].checked = true
-                  that.$data.oldCheckedIndex = index
+                  that.$data.oldCheckedIndex = index.toString()
                   that.$data.catetoryName = child.alias
                 } else {
                   catetoryList[index].checked = false

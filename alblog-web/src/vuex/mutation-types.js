@@ -12,3 +12,5 @@ export const CHANGE_SITETITLE = 'CHANGE_SITETITLE'
 
 // set site share info
 export const CHANGE_SHAREINFO = 'CHANGE_SHAREINFO'
+
+export const CHANGE_ADMINTITLE = 'CHANGE_ADMINTITLE'

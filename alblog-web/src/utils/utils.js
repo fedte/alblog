@@ -57,3 +57,24 @@ export const randomColor = function() {
   let random = parseInt(Math.random() * colors.length)
   return colors[random]
 }
+
+// 事件触发
+export const trigger = function(el, type) {
+  try {
+    if (el.dispatchEvent) {
+      let eventt = document.createEvent('Event')
+      eventt.initEvent(type, true, true)
+      el.dispatchEvent(eventt)
+    } else if (el.fireEvent) {
+      el.fireEvent('on' + type)
+    }
+    console.log('----------------')
+    console.log(el + '触发了 ' + type + '事件')
+    console.log('------ End------')
+  } catch (e) {
+    console.log('----------------')
+    console.log(e)
+    console.log('------ End------')
+    return false
+  }
+}

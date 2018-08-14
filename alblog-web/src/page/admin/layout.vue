@@ -46,17 +46,31 @@
         /**
          * 路由被改变之后，进行重新检测权限
          */
+        document.title = '网站管理后台'
         that.checkAuth()
+        // if (this.ISADMIN) {
+        //   $("body").addClass('skin-blue sidebar-mini')
+        // }
       },
       ISADMIN(val) {
         let that = this
         that.loadingInit()
+      },
+      TITLE() {
+        let that = this
+        let to = that.$route
+        if (to.meta && to.meta.title !== '' && to.meta.title !== undefined) {
+          document.title = to.meta.title
+        } else if (that.TITLE !== '') {
+          document.title = that.TITLE
+        }
       }
     },
     computed: {
       ...mapGetters({
         ISLOGIN: 'isLogin',
-        ISADMIN: 'isAdmin'
+        ISADMIN: 'isAdmin',
+        TITLE: 'adminTitle'
       })
     },
     components: {
@@ -70,7 +84,8 @@
       init() {
         let that = this
         that.checkAuth()
-        that.loadingInit()
+        // that.loadingInit()
+        document.title = '网站管理后台'
       },
       /**
        * 校验管理权限

@@ -41,6 +41,10 @@ export default {
 
 <style lang="scss">
   @import "src/scss/common.scss";
+  @font-face {
+    font-family: "huawenxingkai";
+    src: url('/static/common/fonts/huawenxingkai.ttf') format('opentype');
+  }
   #app {
     min-height: 100%;
   }

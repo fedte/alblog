@@ -5,6 +5,7 @@ const logger   = require(ROOT + '/lib/logger.lib')
 
 // const mongoConfig = 'mongodb://' + config.db.user + ':' + config.db.pass + '@' + config.db.host + ':' + config.db.port + '/' + config.db.db,
 const mongoConfig = 'mongodb://' + config.db.host + ':' + config.db.port + '/' + config.db.db
+// mongoose.Promise = global.Promise
 mongoose.connect(mongoConfig, {
   server: {poolSize: 20},
   // user: config.db.user,

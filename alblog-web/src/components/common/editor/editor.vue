@@ -268,8 +268,8 @@
   }
 </script>
 <style lang="scss" scoped>
-  /deep/ .editor-toolbar.fullscreen ,
-  /deep/ .CodeMirror-fullscreen{
+  div /deep/ .editor-toolbar.fullscreen ,
+  div /deep/ .CodeMirror-fullscreen{
     z-index: 9999;
   }
   #showImage {

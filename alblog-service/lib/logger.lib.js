@@ -29,11 +29,9 @@ log4js.configure(config);
 module.exports = {
   access: function () {
     return log4js.connectLogger(log4js.getLogger('access'), { level: 'auto', format: ':remote-addr :method :url :status :response-timems :user-agent :http-version'});
-    // return log4js.connectLogger(log4js.getLogger('access'), { level: 'auto', format: ':method :url'});
   },
   system: function () {
-    log4js.getLogger('system');
-    return log4js.connectLogger(log4js.getLogger('system'), { level: 'auto', format: ':method :url'});
+    return log4js.connectLogger(log4js.getLogger('system'), { level: 'auto', format: ':remote-addr :method :url :status :response-timems :user-agent :http-version'});
   },
   database: function () {
     return log4js.getLogger('database');

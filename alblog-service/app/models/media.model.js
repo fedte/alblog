@@ -16,6 +16,8 @@ const CatetorySchema = new Schema({
   create_at: { type: Date, default: Date.now },
   update_at: { type: Date, default: Date.now },
   deleted: { type: Boolean, default: false }
+}, {
+  usePushEach: true
 })
 
 CatetorySchema.plugin(BaseModel);

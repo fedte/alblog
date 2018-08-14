@@ -22,6 +22,8 @@ const ArticleSchema = new Schema({
   last_reply_at: { type: Date, default: Date.now },
   content_is_html: { type: Boolean },
   deleted: { type: Boolean, default: false },
+}, {
+  usePushEach: true
 });
 
 ArticleSchema.plugin(BaseModel);

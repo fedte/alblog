@@ -193,6 +193,9 @@ exports.create = function (req, res, next) {
   ep.all('user_saved', 'catetory_saved', function (user, catetory) {
     // 拼接两个返回的数据，确保返回的是一个完整的数据
     article = _.extend(user, catetory)
+    console.log('-----------------')
+    console.log(article)
+    console.log('-----------------')
     // 设置缓存数据
     cache.set('article_' + article.id, article, tools.time.M(true))
     return resJSON(res, true, 10000, '发布成功', { article })
@@ -209,7 +212,13 @@ exports.create = function (req, res, next) {
       CatetoryProxy.getByCatetoryId(catetory, ep.done(function (catetory) {
         if (catetory) {
           catetory.content_count.push(article.id)
+          console.log('--------catetory update---------')
+          console.log(catetory)
+          console.log('--------catetory update---------')
           catetory.save()
+          console.log('-----------------')
+          console.log(catetory)
+          console.log('-----------------')
           // 获取分类信息
           article.catetory = _.pick(catetory, ['name', 'alias'])
         }
@@ -286,7 +295,6 @@ exports.update = function (req, res, next) {
   } else {
     tag = []
   }
-  
   let ep = new eventproxy()
   ep.fail(next)
 
@@ -328,10 +336,19 @@ exports.update = function (req, res, next) {
         // 更新修改之后的分类内容
         CatetoryProxy.getByCatetoryId(catetory, ep.done(function (catetory) {
           catetory.content_count.push(article.id)
-          catetory.save()
-          // 获取分类详情
-          article.catetory = _.pick(catetory, ['name', 'alias'])
-          ep.emit('article_saved', article)
+          console.log('--------catetory update---------')
+          console.log(catetory)
+          console.log('--------catetory update---------')
+          // catetory.markModified('content_count')
+          catetory.save(function (err, catetory) {
+            if (err) console.log(err)
+            console.log('--------catetory update after---------')
+            console.log(catetory)
+            console.log('--------catetory update---------')
+            // 获取分类详情
+            article.catetory = _.pick(catetory, ['name', 'alias'])
+            ep.emit('article_saved', article)
+          })
         }))
       } else {
         ep.emit('article_saved', article)

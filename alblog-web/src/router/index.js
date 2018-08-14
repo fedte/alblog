@@ -16,12 +16,12 @@ const AdminCatetoryList = () => import('@/page/admin/catetory/list')
 const AdminArticleNew = () => import('@/page/admin/article/new')
 const AdminArticleList = () => import('@/page/admin/article/list')
 
-const WebLayout = () => import('@/page/web/layout')
-const WebArticleInfo = () => import('@/page/web/article/article')
-const WebArticleList = () => import('@/page/web/article/list')
-const WebIndex = () => import('@/page/web/index')
-const WebTagsList = () => import('@/page/web/tags/list')
-const WebCatetoryList = () => import('@/page/web/catetory/list')
+const WebLayout = () => import('@/template/web/layout')
+const WebArticleInfo = () => import('@/template/web/article/article')
+const WebArticleList = () => import('@/template/web/article/list')
+const WebIndex = () => import('@/template/web/index')
+const WebTagsList = () => import('@/template/web/tags/list')
+const WebCatetoryList = () => import('@/template/web/catetory/list')
 const scrollBehavior = (to, from, savedPosition) => {
   return { x: 0, y: 0 }
 }
@@ -160,10 +160,10 @@ const title = document.title
 
 router.beforeEach((to, from, next) => {
   store.dispatch('setSiteTitle', '')
+  store.dispatch('setAdminTitle', '')
   store.dispatch('setShareInfo', '')
 
   if (to.meta && to.meta.title !== '' && to.meta.title !== undefined) {
-    // console.log();
     // console.log("title:",to.meta.title);
 
     document.title = to.meta.title

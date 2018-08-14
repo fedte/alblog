@@ -10,7 +10,8 @@
             <img v-else src="~assets/images/tuxiang.jpg" alt="" class="author-cover hidden-xs mr10" :title="article.author.loginname">
             <div>
               <span class="time fs14" title="创作时间">{{formatDate(article.create_at)}}</span>
-              <router-link to="/" class="name fs18" title="作者">{{article.author.loginname}}</router-link>
+              <a href="https://github.com/falost" class="name fs18" title="作者" target="_blank">{{article.author.loginname}}</a>
+              <router-link to="/" class="name fs18" title="作者"></router-link>
             </div>
           </div>
         </header>
@@ -301,6 +302,37 @@
           imgUrl: that.$data.article.thumbnail,
           link: window.location.href
         })
+      }
+    },
+    directives: {
+      onlaod: {
+        inserted: function (el, {value}) {
+          window.onscroll = function () {
+            let scrollHeight
+            let clientHeight
+            let scrollTop
+            if (document.documentElement) {
+              scrollTop = document.documentElement.scrollTop
+              clientHeight = document.documentElement.clientHeight
+              scrollHeight = document.documentElement.scrollHeight
+            } else if (document.body) {
+              scrollTop = document.body.scrollTop
+              clientHeight = document.body.clientHeight
+              scrollHeight = document.body.scrollHeight
+            }
+            // console.log('----------------')
+            // console.log(scrollTop, clientHeight, scrollHeight, scrollTop + clientHeight == scrollHeight)
+            // console.log('------ End------')
+            if (scrollTop + clientHeight >= scrollHeight - 50) {
+              if (typeof value === 'function') {
+                value()
+              }
+            }
+          }
+        },
+        unbind (el) {
+          window.onscroll = null
+        }
       }
     },
     component: {},
@@ -730,10 +762,10 @@
     }
   }
   /* 弹框 */
-  /deep/ .model-box {
+  div /deep/ .model-box {
     width: 20%;
   }
-  /deep/ .replybox {
+  div /deep/ .replybox {
     width: 30%;
     .editbox {
       .placeholder {
@@ -792,3 +824,4 @@
   @import "src/scss/response.scss";
 
 </style>
+

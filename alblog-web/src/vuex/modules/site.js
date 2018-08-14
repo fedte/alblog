@@ -6,6 +6,7 @@ import * as types from '../mutation-types'
 const state = {
   initStatus: false,
   title: '',
+  adminTitle: '',
   siteTitle: '',
   share: {}
 }
@@ -15,6 +16,7 @@ const state = {
 const getters = {
   initStatus: state => state.initStatus,
   title: state => state.title,
+  adminTitle: state => state.adminTitle,
   siteTitle: state => state.siteTitle,
   share: state => state.share
 }
@@ -33,6 +35,9 @@ const actions = {
       title = {title}
     }
     commit(types.CHANGE_SITETITLE, title)
+  },
+  setAdminTitle ({ commit, state }, title) {
+    commit(types.CHANGE_ADMINTITLE, title)
   },
 
   setShareInfo ({ commit, state }, info) {
@@ -54,6 +59,10 @@ const mutations = {
     } else {
       state.title = titles.title
     }
+  },
+    // 页面标题设置 by falost
+  [types.CHANGE_ADMINTITLE] (state, titles) {
+    state.adminTitle = titles.title
   },
     // 页面分享信息
   [types.CHANGE_SHAREINFO] (state, info) {
