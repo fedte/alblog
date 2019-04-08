@@ -1,0 +1,146 @@
+@media (max-width: 768px) {
+  /* index */
+  .box{
+    width: 100%;
+  }
+  section{
+    &.home{
+      div.box{
+        section{
+          padding: 15vh 0 25vh;
+          .tag{
+            padding: 5px;
+          }
+        }
+      }
+    }
+    &.intr{
+      padding: 0;
+      padding-top: 3vh;
+      .main{
+        &>div{
+          width: 100%;
+          min-height: 200px;
+          padding: 20px;
+          background-color: rgba(25, 162, 180, 0.1);
+          h3{
+            margin: 0;
+          }
+          a{
+            bottom: 10px;
+          }
+          &:nth-child(2){
+            background-color: rgba(223, 240, 215, 0.1);
+          }
+          &:nth-child(3){
+            background-color: rgba(206, 102, 100, 0.1);
+          }
+        }
+      }
+    }
+    &.skill{
+      margin-top: 20px;
+      padding: 5vh 0;
+      .main{
+        width: 100%;
+        height: auto;
+        .left{
+          width: 100vw;
+          height: 80vw;
+          min-height: 300px;
+          padding: 0 20pt;
+          transform: translate(0, 0);
+        }
+        .right{
+          width: 100%;
+          padding: 0 20pt;
+          .skill_list{
+            width: 100%;
+          }
+        }
+      }
+      p:last-child{
+        bottom: 0px;
+      }
+    }
+  }
+  /* blog */
+  .content-detail,
+  .content-comment {
+    width: 100%;
+    padding: 15px;
+  }
+  .content-detail {
+    .digg {
+      margin-top: 15px;
+      span {
+        width: 40px;
+        height: 40px;
+        line-height: 35px;
+        font-size: 22px;
+      }
+    }
+    header {
+      .title {
+        margin: 5px 0;
+        font-size: 16px;
+      }
+      .time {
+        display: inline-block;
+        margin-right: 5px;
+      }
+      .name {
+        font-size: 14px;
+      }
+    }
+  }
+  // 评论
+  .content-comment,
+  .replybox {
+    .author {
+      margin-right: 0;
+      min-width: 50px;
+      max-width: 80px;
+      .photo {
+        width: 35px;
+        margin: auto;
+      }
+    }
+    .editbox {
+      .placeholder {
+        font-size: 14px;
+      }
+    }
+    .list {
+      .author {
+        margin-right: 0;
+        min-width: 35px;
+        .photo {
+          width: 35px;
+          margin: auto;
+        }
+      }
+    }
+  }
+  /* 弹框 */
+  div /deep/ .model-box,
+  div /deep/ .replybox {
+    width: 90%;
+    .el-dialog__body {
+      padding: 10px 10px;
+    }
+  }
+  .barBox {
+    width: 50px;
+    height: 50px;
+    div {
+      span{
+        font-size: 50px;
+        line-height: 50px;
+        &:last-child{
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
