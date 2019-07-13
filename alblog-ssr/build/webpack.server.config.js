@@ -28,9 +28,9 @@ const config = merge(base, {
   ]
 })
 if (process.env.NODE_ENV === 'production') {
-  for (let item of config.module.rules) {
+  // for (let item of config.module.rules) {
     // if (item.loader === 'vue-loader') item.options = {}
-  }
+  // }
 }
 
 module.exports = config

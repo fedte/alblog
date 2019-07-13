@@ -51,6 +51,9 @@ export default {
   ul,li{
     list-style: none;
   }
+  .h1, .h2, .h3, h1, h2, h3 {
+    margin: 0; 
+  }
   ::-webkit-scrollbar {
     width: 1px;
   }

@@ -1,0 +1,9 @@
+{
+  "jumpToAliasFile.alias": {
+    "vue$": "vue/dist/vue.esm.js",
+    "@": "/Users/falost/my/alblog/alblog-web/src",
+    "jquery": "/Users/falost/my/alblog/alblog-web/node_modules/jquery/src/jquery",
+    "$": "/Users/falost/my/alblog/alblog-web/node_modules/jquery/src/jquery",
+    "assets": "/Users/falost/my/alblog/alblog-web/src/assets"
+  }
+}

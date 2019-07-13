@@ -2,8 +2,8 @@ const path = require('path')
 
 const isProd = process.env.NODE_ENV === 'production'
 
-const proUrl = 'https://api.falost.cc' // 生产环境api地址
-const devUrl = 'https://api.falost.cc' // 开发api地址
+const proUrl = 'https://api.blog.fedte.cc/' // 生产环境api地址
+const devUrl = 'https://api.blog.fedte.cc/' // 开发api地址
 
 const FaceUrl = isProd ? proUrl : devUrl
 

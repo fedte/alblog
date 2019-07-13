@@ -6,8 +6,8 @@ import qs from 'qs'
 
 import md5 from '../utils/md5'
 
-// const URI = 'http://10.1.3.4:3000/'
-const URI = 'https://api.falost.cc/'
+// const URI = 'http://172.18.1.44:3000/'
+const URI = 'https://api.blog.fedte.cc/'
 const admin = 'admin/api/v1'
 const web = 'api/v1'
 

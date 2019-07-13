@@ -7,7 +7,6 @@ const HTMLPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const SWPrecachePlugin = require('sw-precache-webpack-plugin')
 
-
 const config = merge(base, {
   resolve: {
     alias: {
@@ -28,7 +27,8 @@ const config = merge(base, {
     }),
     // generate output HTML
     new HTMLPlugin({
-      template: 'src/index.template.html'
+      template: 'src/index.template.html',
+      prod: process.env.NODE_ENV === 'production'
     })
   ]
 })

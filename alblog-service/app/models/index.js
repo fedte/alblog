@@ -8,8 +8,8 @@ const mongoConfig = 'mongodb://' + config.db.host + ':' + config.db.port + '/' +
 // mongoose.Promise = global.Promise
 mongoose.connect(mongoConfig, {
   server: {poolSize: 20},
-  // user: config.db.user,
-  // pass: config.db.pass
+  user: config.db.user,
+  pass: config.db.pass
 }, function (err) {
   if (err) {
     logger.database('connect to %s error: ', config.db, err.message)

@@ -1,0 +1,7 @@
+/build/*.js
+/config/*.js
+/dist/*.*
+/*.js
+/src/utils/md5.js
+/src/utils/simplemde/
+/test/unit/coverage/

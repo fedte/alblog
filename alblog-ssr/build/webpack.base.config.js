@@ -78,7 +78,7 @@ module.exports = {
         test: /\.js$/,
         loader: 'babel-loader',
         include: [
-          resolve('../src'), 
+          resolve('../src'),
           resolve('../test')
         ],
         exclude: /node_modules/,
@@ -118,6 +118,6 @@ module.exports = {
         // use custom postcss plugins
         postcss: [require('autoprefixer')()]
       }
-    }),
+    })
   ]
 }

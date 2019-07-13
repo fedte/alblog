@@ -11,7 +11,7 @@ const Delete = require('../api/v1/admin/delete')
 router.all('/test', function (req, res) {
   res.json({test: true, user: req.session.user})
 })
-router.post('/isAdmin', Auth.adminRequired, function (req, res){
+router.post('/isAdmin', Auth.adminRequired, function (req, res) {
   res.json({
     success: true,
     code: 10000,

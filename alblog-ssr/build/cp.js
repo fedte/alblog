@@ -226,7 +226,7 @@ const packageJson = `{
 }`
 
 // 把打包后的文件放在dist目录文件夹
-const dirArr = ['output/', 'public/', 'config/', 'processes.json', 'server.js']
+const dirArr = ['output/', 'config/','public/', 'processes.json', 'server.js']
 dirArr.forEach(function (item) {
   let src = resolve(`../${item}`)
   let dst = resolve(`../dist/${item}`)

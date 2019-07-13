@@ -482,7 +482,7 @@
     }
   }
 </script>
-<style lang="" scoped>
+<style lang="scss" scoped>
   .logout{
     position: absolute;
     right: 10px;

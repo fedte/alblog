@@ -7,7 +7,7 @@ const proxyMiddleware = require('http-proxy-middleware')
 const portfinder = require('portfinder')
 
 const config = require('./config')
-const isProd = process.env.NODE_ENV === 'production'
+const isProd = process.env.NODE_ENV === 'production' || true
 
 const app = express()
 
