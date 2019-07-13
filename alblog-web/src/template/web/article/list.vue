@@ -15,7 +15,9 @@
             </div>
             <div class="article-tags flex" v-if="item.tag.length > 0">
               <span class="fui-font fui-tag c-666 mr10" title="标签"></span>
-              <router-link :to="'/tags/' + item" class='tag mr10' v-for="(item, index) in item.tag" :key="index" v-if="index < 5" :style="'background-color:' + bgColor()" :title="item">{{item}}</router-link>
+              <template v-for="(item, index) in item.tag">
+                <router-link :to="'/tags/' + item" class='tag mr10' :key="index" v-if="index < 5" :style="'background-color:' + bgColor()" :title="item">{{item}}</router-link>
+              </template>
             </div>
             <div class="article-desc">
               <router-link :to="'/article/' + item.id" class="c-666" title="简介">{{item.content | spliceDesc}}</router-link>

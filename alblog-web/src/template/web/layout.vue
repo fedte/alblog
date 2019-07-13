@@ -91,7 +91,8 @@ a{
   padding-top: 40pt
 }
 .box{
-  width: $maxWidth;
+  width: 100%;
+  max-width: $maxWidth;
   margin: 0 auto;
 }
 

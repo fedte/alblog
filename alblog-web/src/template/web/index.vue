@@ -78,6 +78,12 @@
         </div>
       </div>
     </section>
+    <!-- 创意来自 mofei 的博客 https://www.zhuwenlong.com/ -->
+    <section class="footprint tac">
+      <h2>The Corner of the World</h2>
+      <p>Call from the world!</p>
+      <div class="main" id="world"></div>
+    </section>
     <section class="contact">
       <div class="box">
         <div>
@@ -100,6 +106,7 @@
 </template>
 <script>
   import echarts from 'echarts'
+  import world from '@/../static/common/js/world.js'
   export default {
     data() {
       return {
@@ -307,12 +314,39 @@
       },
       showWxImg() {
 
+      },
+      initMap () {
+        // eslint-disable-next-line new-cap
+        let _map = new world('world')
+
+        let mapData = [
+          [110, 19, '北京'],
+          [106, 23, '西安'],
+          [105, 24, '成都'],
+          [105, 25, '大凉山'],
+          [104, 26, '攀枝花'],
+          [104, 28, '丽江'],
+          [107, 21, '吕梁'],
+          [108, 22, '晋城'],
+          [110, 21, '石家庄'],
+          [108, 25, '十堰']
+        ]
+        mapData.forEach(d => {
+          _map.add([d[0], d[1]], {
+            title: d[2]
+          })
+        })
+
+        return () => {
+          _map.destory()
+        }
       }
     },
     mounted () {
       this.$store.dispatch('setSiteTitle', 'Falost 的小窝 - 非著名前端技术博客，记录生活中的点滴！')
       this.bubble()
       this.indexInit()
+      this.initMap()
     }
   }
 </script>
@@ -387,9 +421,9 @@ section{
             position: relative;
             z-index: 2;
             img{
-               width: 100%;
-               height: 100%;
-               border-radius: 50%;
+              width: 100%;
+              height: 100%;
+              border-radius: 50%;
             }
           }
           span.bg{
@@ -448,7 +482,7 @@ section{
           position: absolute;
           width: 0;
           height: 0;
-          bottom: 0;
+          bottom: -2px;
           left: 0;
           border-style: solid;
           border-width: 3rem 50vw 0;
@@ -601,6 +635,16 @@ section{
   }
   &.case{
     display: none;
+  }
+  &.footprint {
+    position: relative;
+    padding: 10vh 0;
+    background: #4a6ebc;
+    overflow: hidden;
+    color: #fff; 
+    .main {
+      padding-top: 5vh
+    }
   }
   &.contact{
     color: #ffffff;

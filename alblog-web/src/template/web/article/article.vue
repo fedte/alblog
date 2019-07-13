@@ -680,6 +680,9 @@
         margin-right: 5px;
       }
     }
+    .content {
+      word-break: break-all;
+    }
   }
   /* 内容评论 */
   .content-comment,
