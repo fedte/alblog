@@ -40,7 +40,6 @@ export default {
 </script>
 
 <style lang="scss">
-  @import "src/scss/common.scss";
   @font-face {
     font-family: "huawenxingkai";
     src: url('/static/common/fonts/huawenxingkai.ttf') format('opentype');

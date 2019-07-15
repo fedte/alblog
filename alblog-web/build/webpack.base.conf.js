@@ -1,6 +1,6 @@
 /*
  * @Descripttion: webpack 默认配置
- * @version: 
+ * @version:
  * @Author: falost
  * @Date: 2019-07-12 09:19:11
  * @LastEditors: falost
@@ -45,7 +45,8 @@ module.exports = {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
       'scss': resolve('src/scss'),
-      'assets': resolve('src/assets')
+      'assets': resolve('src/assets'),
+      'jquery': resolve('/node_modules/jquery/src/jquery')
     }
   },
   module: {
@@ -100,12 +101,12 @@ module.exports = {
     child_process: 'empty'
   },
   externals: {
-    'vue':'Vue',
-    'element-ui':'ElementUI',
+    'vue': 'Vue',
+    'element-ui': 'ElementUI',
     // 'mint-ui':'MINT',
-    'axios':'axios',
-    'vue-router':'VueRouter',
-    'vuex':'Vuex',
+    'axios': 'axios',
+    'vue-router': 'VueRouter',
+    'vuex': 'Vuex',
     './utils/weixin_js_sdk': 'wx'
   }
 }

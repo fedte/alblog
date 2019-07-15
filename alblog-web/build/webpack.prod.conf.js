@@ -1,6 +1,6 @@
 /*
  * @Descripttion: webpack 生产环境配置
- * @version: 
+ * @version:
  * @Author: falost
  * @Date: 2019-07-12 09:19:11
  * @LastEditors: falost
@@ -18,7 +18,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const env = process.env.NODE_ENV === 'testing'
   ? require('../config/test.env')
@@ -48,11 +48,11 @@ const webpackConfig = merge(baseWebpackConfig, {
       uglifyOptions: {
         compress: {
           warnings: false,
-          dead_code: process.env.NODE_ENV === 'development' ? false : true , // 移除没被引用的代码
-          drop_debugger: process.env.NODE_ENV === 'development' ? false : true, // 移除项目中的debugeer
-          drop_console: process.env.NODE_ENV === 'development' ? false : true, // 移除console.*的方法
-          collapse_vars: process.env.NODE_ENV === 'development' ? false : true, // 内嵌定义了但是只用到一次的变量
-          reduce_vars: process.env.NODE_ENV === 'development' ? false : true,// 提取出出现多次但是没有定义成变量去引用的
+          dead_code: process.env.NODE_ENV !== 'development', // 移除没被引用的代码
+          drop_debugger: process.env.NODE_ENV !== 'development', // 移除项目中的debugeer
+          drop_console: process.env.NODE_ENV !== 'development', // 移除console.*的方法
+          collapse_vars: process.env.NODE_ENV !== 'development', // 内嵌定义了但是只用到一次的变量
+          reduce_vars: process.env.NODE_ENV !== 'development' // 提取出出现多次但是没有定义成变量去引用的
         }
       },
       sourceMap: config.build.productionSourceMap,
@@ -63,9 +63,9 @@ const webpackConfig = merge(baseWebpackConfig, {
       filename: utils.assetsPath('css/[name].[contenthash].css'),
       // Setting the following option to `false` will not extract CSS from codesplit chunks.
       // Their CSS will instead be inserted dynamically with style-loader when the codesplit chunk has been loaded by webpack.
-      // It's currently set to `true` because we are seeing that sourcemaps are included in the codesplit bundle as well when it's `false`, 
+      // It's currently set to `true` because we are seeing that sourcemaps are included in the codesplit bundle as well when it's `false`,
       // increasing file size: https://github.com/vuejs-templates/webpack/issues/1110
-      allChunks: true,
+      allChunks: false
     }),
     // Compress extracted CSS. We are using this plugin so that possible
     // duplicated CSS from different components can be deduped.
@@ -74,6 +74,11 @@ const webpackConfig = merge(baseWebpackConfig, {
         ? { safe: true, map: { inline: false } }
         : { safe: true }
     }),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery'
+    }),
+
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
     // see https://github.com/ampedandwired/html-webpack-plugin

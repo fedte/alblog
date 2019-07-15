@@ -65,8 +65,6 @@
   }
 </script>
 <style lang="scss">
-@import "src/scss/common.scss";
-
 *{
   padding: 0;
   margin: 0;
@@ -91,8 +89,7 @@ a{
   padding-top: 40pt
 }
 .box{
-  width: 100%;
-  max-width: $maxWidth;
+  width: $maxWidth;
   margin: 0 auto;
 }
 

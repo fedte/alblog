@@ -351,8 +351,6 @@
   }
 </script>
 <style lang="scss" scoped>
-@import "src/scss/common.scss";
-
 #bubble{
   position: fixed;
   left: 0;
@@ -482,7 +480,7 @@ section{
           position: absolute;
           width: 0;
           height: 0;
-          bottom: -2px;
+          bottom: -1px;
           left: 0;
           border-style: solid;
           border-width: 3rem 50vw 0;
