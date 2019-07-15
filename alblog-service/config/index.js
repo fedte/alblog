@@ -4,7 +4,7 @@ let config = {
   port: 3000,
   // mongodb 配置
   db: {
-    host: '127.0.0.1',
+    host: '172.18.1.210',
     port: '27017',
     db: 'alblog',
     user: 'alblog',
@@ -12,10 +12,10 @@ let config = {
   },
   // redis 配置，默认是本地
   redis: {
-    host: '127.0.0.1',
+    host: '172.18.1.210',
     port: 6379,
     db: 0,
-    password: '',
+    password: '123456',
   },
   // 用户设置
   user: {

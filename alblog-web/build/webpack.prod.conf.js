@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: webpack 生产环境配置
+ * @version: 
+ * @Author: falost
+ * @Date: 2019-07-12 09:19:11
+ * @LastEditors: falost
+ * @LastEditTime: 2019-07-12 18:38:43
+ */
 'use strict'
 const path = require('path')
 const utils = require('./utils')
@@ -10,6 +18,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const env = process.env.NODE_ENV === 'testing'
   ? require('../config/test.env')
@@ -27,20 +36,24 @@ const webpackConfig = merge(baseWebpackConfig, {
   output: {
     path: config.build.assetsRoot,
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
-    chunkFilename: utils.assetsPath('js/[name].[chunkhash].js')
+    chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
       'process.env': env
     }),
-    // UglifyJs do not support ES6+, you can also use babel-minify for better treeshaking: https://github.com/babel/minify
     new UglifyJsPlugin({
-      compress: {
-        warnings: false,
-        dead_code: true, // 移除没被引用的代码
-        drop_debugger: true, // 移除项目中的debugeer
-        drop_console: true // 移除console.*的方法
+      test: /\.js(\?.*)?$/i,
+      uglifyOptions: {
+        compress: {
+          warnings: false,
+          dead_code: process.env.NODE_ENV === 'development' ? false : true , // 移除没被引用的代码
+          drop_debugger: process.env.NODE_ENV === 'development' ? false : true, // 移除项目中的debugeer
+          drop_console: process.env.NODE_ENV === 'development' ? false : true, // 移除console.*的方法
+          collapse_vars: process.env.NODE_ENV === 'development' ? false : true, // 内嵌定义了但是只用到一次的变量
+          reduce_vars: process.env.NODE_ENV === 'development' ? false : true,// 提取出出现多次但是没有定义成变量去引用的
+        }
       },
       sourceMap: config.build.productionSourceMap,
       parallel: true
@@ -48,21 +61,18 @@ const webpackConfig = merge(baseWebpackConfig, {
     // extract css into its own file
     new ExtractTextPlugin({
       filename: utils.assetsPath('css/[name].[contenthash].css'),
-      // set the following option to `true` if you want to extract CSS from
-      // codesplit chunks into this main css file as well.
-      // This will result in *all* of your app's CSS being loaded upfront.
-      allChunks: false
+      // Setting the following option to `false` will not extract CSS from codesplit chunks.
+      // Their CSS will instead be inserted dynamically with style-loader when the codesplit chunk has been loaded by webpack.
+      // It's currently set to `true` because we are seeing that sourcemaps are included in the codesplit bundle as well when it's `false`, 
+      // increasing file size: https://github.com/vuejs-templates/webpack/issues/1110
+      allChunks: true,
     }),
     // Compress extracted CSS. We are using this plugin so that possible
     // duplicated CSS from different components can be deduped.
     new OptimizeCSSPlugin({
       cssProcessorOptions: config.build.productionSourceMap
-      ? { safe: true, map: { inline: false } }
-      : { safe: true }
-    }),
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery'
+        ? { safe: true, map: { inline: false } }
+        : { safe: true }
     }),
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
@@ -73,6 +83,8 @@ const webpackConfig = merge(baseWebpackConfig, {
         : config.build.index,
       template: 'index.html',
       inject: true,
+      prod: true,
+      time: '201812031806',
       minify: {
         removeComments: true,
         collapseWhitespace: true,
@@ -83,14 +95,14 @@ const webpackConfig = merge(baseWebpackConfig, {
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency'
     }),
-    // keep module.id stable when vender modules does not change
+    // keep module.id stable when vendor modules does not change
     new webpack.HashedModuleIdsPlugin(),
     // enable scope hoisting
     new webpack.optimize.ModuleConcatenationPlugin(),
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      minChunks: function (module) {
+      minChunks (module) {
         // any required modules inside node_modules are extracted to vendor
         return (
           module.resource &&
@@ -124,7 +136,8 @@ const webpackConfig = merge(baseWebpackConfig, {
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])
+    ]),
+    new BundleAnalyzerPlugin()
   ]
 })
 

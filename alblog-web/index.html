@@ -28,6 +28,17 @@
   </head>
   <body>
     <div id="app"></div>
+    <% if(htmlWebpackPlugin.options.prod) { %>
+      <script src="/static/libs/vue/dist/vue.min.js?t=<%=htmlWebpackPlugin.options.time %>"></script>
+      <script src="/static/libs/axios/dist/axios.min.js?t=<%=htmlWebpackPlugin.options.time %>"></script>
+      <script src="/static/libs/vue-router/dist/vue-router.min.js?t=<%=htmlWebpackPlugin.options.time %>"></script>
+      <script src="/static/libs/vuex/dist/vuex.min.js?t=<%=htmlWebpackPlugin.options.time %>"></script>
+    <% } else { %>
+      <script src="/static/libs/vue/dist/vue.js?t=<%=htmlWebpackPlugin.options.time %>"></script>
+      <script src="/static/libs/axios/dist/axios.js?t=<%=htmlWebpackPlugin.options.time %>"></script>
+      <script src="/static/libs/vue-router/dist/vue-router.js?t=<%=htmlWebpackPlugin.options.time %>"></script>
+      <script src="/static/libs/vuex/dist/vuex.js?t=<%=htmlWebpackPlugin.options.time %>"></script>
+    <% } %>
     <!-- built files will be auto injected -->
   </body>
 </html>

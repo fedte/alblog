@@ -1,12 +1,31 @@
+/*
+ * @Descripttion: webpack 默认配置
+ * @version: 
+ * @Author: falost
+ * @Date: 2019-07-12 09:19:11
+ * @LastEditors: falost
+ * @LastEditTime: 2019-07-12 18:26:28
+ */
 'use strict'
 const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
+
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
+
+const createLintingRule = () => ({
+  test: /\.(js|vue)$/,
+  loader: 'eslint-loader',
+  enforce: 'pre',
+  include: [resolve('src'), resolve('test')],
+  options: {
+    formatter: require('eslint-friendly-formatter'),
+    emitWarning: !config.dev.showEslintErrorsInOverlay
+  }
+})
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
@@ -21,44 +40,26 @@ module.exports = {
       : config.dev.assetsPublicPath
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json'],
+    extensions: ['.js', '.vue', '.json', '.scss'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
-      'jquery': resolve('/node_modules/jquery/src/jquery'),
-      '$': resolve('/node_modules/jquery/src/jquery'),
-      'assets': path.resolve(__dirname, '../src/assets')
+      'scss': resolve('src/scss'),
+      'assets': resolve('src/assets')
     }
   },
-  plugins: [
-    // make sure to include the plugin for the magic
-    new VueLoaderPlugin()
-  ],
   module: {
     rules: [
-      ...(config.dev.useEslint ? [{
-        test: /\.(js|vue)$/,
-        loader: 'eslint-loader',
-        enforce: 'pre',
-        include: [resolve('src'), resolve('test')],
-        options: {
-          formatter: require('eslint-friendly-formatter'),
-          emitWarning: !config.dev.showEslintErrorsInOverlay
-        }
-      }] : []),
+      ...(config.dev.useEslint ? [createLintingRule()] : []),
       {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: vueLoaderConfig
       },
       {
-        test: /\.sass$/,
-        loaders: ['style', 'css', 'sass']
-      },
-      {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test')]
+        include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -85,5 +86,26 @@ module.exports = {
         }
       }
     ]
+  },
+  node: {
+    // prevent webpack from injecting useless setImmediate polyfill because Vue
+    // source contains it (although only uses it if it's native).
+    setImmediate: false,
+    // prevent webpack from injecting mocks to Node native modules
+    // that does not make sense for the client
+    dgram: 'empty',
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty',
+    child_process: 'empty'
+  },
+  externals: {
+    'vue':'Vue',
+    'element-ui':'ElementUI',
+    // 'mint-ui':'MINT',
+    'axios':'axios',
+    'vue-router':'VueRouter',
+    'vuex':'Vuex',
+    './utils/weixin_js_sdk': 'wx'
   }
 }
