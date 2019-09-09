@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>ALBlog</title>
+    <title>Falost 的个人主页</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta name="Author" content="神棍、Falost">
     <!-- 让IE浏览器用最高级内核渲染页面 还有用 Chrome 框架的页面用webkit 内核
@@ -37,6 +37,7 @@
   </head>
   <body>
     <div id="app"></div>
+    <script src="/static/libs/highlight/highlight.pack.js?t=<%=htmlWebpackPlugin.options.time %>"></script>
     <% if(htmlWebpackPlugin.options.prod) { %>
       <script src="/static/libs/vue/dist/vue.min.js?t=<%=htmlWebpackPlugin.options.time %>"></script>
       <script src="/static/libs/axios/dist/axios.min.js?t=<%=htmlWebpackPlugin.options.time %>"></script>
@@ -48,6 +49,8 @@
       <script src="/static/libs/vue-router/dist/vue-router.js?t=<%=htmlWebpackPlugin.options.time %>"></script>
       <script src="/static/libs/vuex/dist/vuex.js?t=<%=htmlWebpackPlugin.options.time %>"></script>
     <% } %>
+    <script src="/static/libs/element-ui/js/index.js?t=<%=htmlWebpackPlugin.options.time %>"></script>
+    <script src="/static/libs/echarts/dist/echarts.min.js?t=<%=htmlWebpackPlugin.options.time %>"></script>
     <!-- built files will be auto injected -->
   </body>
 </html>

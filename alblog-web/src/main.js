@@ -7,7 +7,7 @@ import router from './router'
 import '@/../static/common/bootstrap/css/bootstrap.min.css'
 import '@/../static/common/css/animate.css'
 import '@/scss/element-variables.scss'
-import { Input, Button, Select, Message, MessageBox, Pagination, Popover, Dialog } from 'element-ui'
+import { Message, MessageBox } from 'element-ui'
 // 引入API接口配置 Edit by falost
 import * as API from './api'
 // 引入公共方法 Edit by falost
@@ -17,8 +17,8 @@ import Store from 'store'
 // 骨架
 import VueContentPlaceholders from 'vue-content-placeholders'
 
-import hljs from 'highlight.js'
-import 'highlight.js/styles/atom-one-dark.css' // 样式文件
+// import hljs from 'highlight.js'
+import '@/../static/libs/highlight/styles/atom-one-dark.css' // 样式文件
 
 const DEV = true
 // const DEV = false
@@ -30,6 +30,7 @@ Vue.config.devtools = DEV
 Vue.directive('highlight', function (el) {
   let blocks = el.querySelectorAll('pre code')
   blocks.forEach((block) => {
+    // eslint-disable-next-line no-undef
     hljs.highlightBlock(block)
   })
 })
@@ -65,12 +66,12 @@ Vue.directive('highlight', function (el) {
 })
  */
 // 组件
-Vue.component(Input.name, Input)
-Vue.component(Button.name, Button)
-Vue.component(Select.name, Select)
-Vue.component(Pagination.name, Pagination)
-Vue.component(Popover.name, Popover)
-Vue.component(Dialog.name, Dialog)
+// Vue.component(Input.name, Input)
+// Vue.component(Button.name, Button)
+// Vue.component(Select.name, Select)
+// Vue.component(Pagination.name, Pagination)
+// Vue.component(Popover.name, Popover)
+// Vue.component(Dialog.name, Dialog)
 // 插件
 Vue.use(VueContentPlaceholders)
 

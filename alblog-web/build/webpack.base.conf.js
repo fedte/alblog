@@ -107,6 +107,8 @@ module.exports = {
     'axios': 'axios',
     'vue-router': 'VueRouter',
     'vuex': 'Vuex',
-    './utils/weixin_js_sdk': 'wx'
+    './utils/weixin_js_sdk': 'wx',
+    'highlight.js': 'hljs',
+    'echarts': 'echarts'
   }
 }
