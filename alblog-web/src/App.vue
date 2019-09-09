@@ -156,4 +156,25 @@ export default {
     width: 100%;
     height: 100%;
   }
+  div[data-auto='auto'] {
+    * {
+      max-width: 100% !important;
+      // width: auto !important;
+    }
+
+    img,
+    video,
+    iframe {
+      max-width: 100% !important;
+      height: auto !important;
+    }
+
+    pre {
+      max-width: 100% !important;
+      padding: 5px 10px;
+      margin: 10px 0;
+      overflow-x: auto;
+      background-color: $bgcf1;
+    }
+  }
 </style>

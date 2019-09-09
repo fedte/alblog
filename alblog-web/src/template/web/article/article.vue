@@ -16,7 +16,7 @@
           </div>
         </header>
         <section class="content ptb20">
-          <div v-html="article.content" v-highlight>
+          <div v-html="article.content" v-highlight data-auto='auto'>
           </div>
           <div class="copyright pt15">
             <div class="copyright-info">
@@ -682,6 +682,12 @@
     }
     .content {
       word-break: break-all;
+      /deep/ {
+        .h1, .h2, .h3, h1, h2, h3 {
+          margin-top: 20px;
+          margin-bottom: 10px;
+        }
+      }
     }
   }
   /* 内容评论 */
