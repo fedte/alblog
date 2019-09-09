@@ -1,6 +1,6 @@
 {
 	"name": "alblog",
-	"version": "1.0.10",
+	"version": "1.0.11",
 	"description": "一个轻博客-Alblog",
 	"author": "falost <web@5sb.org>",
 	"private": true,
@@ -125,5 +125,5 @@
 		"last 2 versions",
 		"not ie <= 8"
 	],
-	"updated": "2019-07-15T08:13:42.899Z"
+	"updated": "2019-09-09T03:58:53.980Z"
 }

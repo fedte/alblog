@@ -20,8 +20,8 @@ import VueContentPlaceholders from 'vue-content-placeholders'
 // import hljs from 'highlight.js'
 import '@/../static/libs/highlight/styles/atom-one-dark.css' // 样式文件
 
-const DEV = true
-// const DEV = false
+// const DEV = true
+const DEV = false
 
 Vue.config.productionTip = DEV
 Vue.config.devtools = DEV
