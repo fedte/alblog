@@ -5,10 +5,16 @@ const apiRouter = require('./router')
 const apiAdminRouter = require('./router/admin')
 const app = express()
 const loggers = require('./lib/logger.lib')
-const session = require("./lib/session.lib")
+const session = require('./lib/session.lib')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
+const path = require('path')
 
+const isProd = process.env.NODE_ENV === 'production' || true
+const resolve = file => path.resolve(__dirname, file)
+const serve = (path, cache) => express.static(resolve(path), {
+  maxAge: cache && isProd ? 60 * 60 * 24 * 30 : 0
+})
 // 记录日志
 app.use(loggers.access())
 
@@ -20,8 +26,10 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(require('connect-multiparty')())
 // cookie处理 by falost
 app.use(cookieParser())
+
+// app.use('/router/path', serve('./file/path'))
 // session处理
-// app.use(session.check(),session.init())
+app.use(session.check(), session.init())
 
 // router by falost
 app.use('/admin/api/v1', cors(), apiAdminRouter)
