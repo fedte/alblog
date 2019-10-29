@@ -29,7 +29,7 @@
     "log4js": "^0.6.38",
     "markdown-it": "^8.4.0",
     "moment": "^2.19.2",
-    "mongoose": "^4.13.5",
+    "mongoose": "^5.7.5",
     "multiline": "^1.0.2",
     "node-uuid": "^1.4.8",
     "utility": "^1.13.1",
