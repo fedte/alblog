@@ -8,13 +8,13 @@ const loggers = require('./lib/logger.lib')
 const session = require('./lib/session.lib')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
-const path = require('path')
+// const path = require('path')
 
-const isProd = process.env.NODE_ENV === 'production' || true
-const resolve = file => path.resolve(__dirname, file)
-const serve = (path, cache) => express.static(resolve(path), {
-  maxAge: cache && isProd ? 60 * 60 * 24 * 30 : 0
-})
+// const isProd = process.env.NODE_ENV === 'production' || true
+// const resolve = file => path.resolve(__dirname, file)
+// const serve = (path, cache) => express.static(resolve(path), {
+//   maxAge: cache && isProd ? 60 * 60 * 24 * 30 : 0
+// })
 // 记录日志
 app.use(loggers.access())
 
