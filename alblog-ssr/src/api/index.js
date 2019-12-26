@@ -43,7 +43,6 @@ function vRequest (params, url, type = '') {
     } else {
       return API.post(url, params.data)
     }
-
   } else if (params.method === 'UPLOAD') {
     // config = {
     //   method: 'POST',

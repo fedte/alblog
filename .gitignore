@@ -58,4 +58,26 @@ typings/
 # dotenv environment variables file
 .env
 
-*/dist/
+.DS_Store
+*/node_modules/
+*/dist/*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+/test/unit/coverage/
+/test/e2e/reports/
+selenium-debug.log
+/logs/
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+/alblog-ssr/dist
+/alblog-ssr/output/
+/alblog-ssr/dist/
+/alblog-service/dist/
+/alblog-web/dist/
